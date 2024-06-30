@@ -1,0 +1,15 @@
+C:\Users\mauri\Code\linka-api\src\Linka.Application\bin\Debug\net8.0\Linka.Application.deps.json
+C:\Users\mauri\Code\linka-api\src\Linka.Application\bin\Debug\net8.0\Linka.Application.dll
+C:\Users\mauri\Code\linka-api\src\Linka.Application\bin\Debug\net8.0\Linka.Application.pdb
+C:\Users\mauri\Code\linka-api\src\Linka.Application\bin\Debug\net8.0\Linka.Domain.dll
+C:\Users\mauri\Code\linka-api\src\Linka.Application\bin\Debug\net8.0\Linka.Domain.pdb
+C:\Users\mauri\Code\linka-api\src\Linka.Application\obj\Debug\net8.0\Linka.Application.csproj.AssemblyReference.cache
+C:\Users\mauri\Code\linka-api\src\Linka.Application\obj\Debug\net8.0\Linka.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mauri\Code\linka-api\src\Linka.Application\obj\Debug\net8.0\Linka.Application.AssemblyInfoInputs.cache
+C:\Users\mauri\Code\linka-api\src\Linka.Application\obj\Debug\net8.0\Linka.Application.AssemblyInfo.cs
+C:\Users\mauri\Code\linka-api\src\Linka.Application\obj\Debug\net8.0\Linka.Application.csproj.CoreCompileInputs.cache
+C:\Users\mauri\Code\linka-api\src\Linka.Application\obj\Debug\net8.0\Linka.Ap.8DA76EB2.Up2Date
+C:\Users\mauri\Code\linka-api\src\Linka.Application\obj\Debug\net8.0\Linka.Application.dll
+C:\Users\mauri\Code\linka-api\src\Linka.Application\obj\Debug\net8.0\refint\Linka.Application.dll
+C:\Users\mauri\Code\linka-api\src\Linka.Application\obj\Debug\net8.0\Linka.Application.pdb
+C:\Users\mauri\Code\linka-api\src\Linka.Application\obj\Debug\net8.0\ref\Linka.Application.dll

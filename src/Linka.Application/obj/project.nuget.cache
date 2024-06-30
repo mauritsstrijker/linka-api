@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "eeFnHIlnsDhRPBD1k6GQX/l3makLCeiR0/P01ZtGV85BPkS76oZrVRfYsQyFnZjOJZZBMRUzIGbj76L1B2k8ew==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\mauri\\Code\\linka-api\\src\\Linka.Application\\Linka.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mauri\\.nuget\\packages\\mediatr\\12.3.0\\mediatr.12.3.0.nupkg.sha512",
+    "C:\\Users\\mauri\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\mauri\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.1\\microsoft.extensions.dependencyinjection.abstractions.8.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
