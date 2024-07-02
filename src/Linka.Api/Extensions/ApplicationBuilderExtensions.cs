@@ -1,4 +1,7 @@
-﻿namespace Linka.Api.Extensions
+﻿using Linka.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+
+namespace Linka.Api.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
@@ -24,6 +27,13 @@
             app.UseCors("corspolicy");
 
             return app;
+        }
+
+        public static void MigrateDatabase(this WebApplication app)
+        {
+            using var scope = app.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetService<Context>();
+            dbContext!.Database.Migrate();
         }
 
         public static WebApplication SetupAuthorization(this WebApplication app)
