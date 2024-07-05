@@ -13,10 +13,10 @@ namespace Linka.Application.Mappers
             {
                 imageBase64 = Convert.ToBase64String(@event.ImageBytes);
             }
-            return new EventModel(@event.Title, @event.Description, @event.StartDateTime, @event.EndDateTime, @event.Address, imageBase64);
+            return new EventModel(@event.Id, @event.Title, @event.Description, @event.StartDateTime, @event.EndDateTime, @event.Address, imageBase64);
         }
     }
-    public sealed record EventModel(string Title, string Description, DateTime StartDateTime, DateTime EndDateTime, Address Address, string ImageBase64);
+    public sealed record EventModel(Guid Id, string Title, string Description, DateTime StartDateTime, DateTime EndDateTime, Address Address, string ImageBase64);
 
 }
 
