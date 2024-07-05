@@ -1,6 +1,9 @@
 using Linka.Application.Common;
+using Linka.Application.Mappers;
 using Linka.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Collections;
 
 namespace Linka.Api.Controllers
 {
@@ -10,18 +13,20 @@ namespace Linka.Api.Controllers
     {
         [HttpGet]
         [Route("{eventId}")]
-        public async Task<Event> GetById
+        public async Task<EventModel> GetById
             (
             Guid eventId
             )
         {
-            return await eventRepository.GetFirstAsync(a => a.Id == eventId, CancellationToken.None);
+            var @event = await eventRepository.GetFirstAsync(a => a.Id == eventId, CancellationToken.None);
+            return EventMapper.MapToEventDto(@event);
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Event>> GetAll ()
+        public async Task<IEnumerable<EventModel>> GetAll ()
         {
-            return await eventRepository.GetAsync(CancellationToken.None);
+            var events = await eventRepository.GetAsync(CancellationToken.None);
+            return events.Select(e => EventMapper.MapToEventDto(e));
         }
 
         [HttpPost]
@@ -57,11 +62,16 @@ namespace Linka.Api.Controllers
                 Id = Guid.NewGuid(),
                 Title = request.Title,
                 Description = request.Description,
-                Date = request.Date,
                 StartDateTime = request.StartDateTime,
                 EndDateTime = request.EndDateTime,
                 Address = address,
             };
+
+            if (!request.ImageBase64.IsNullOrEmpty())
+            {
+                var imageBytes = Convert.FromBase64String(request.ImageBase64);
+                @event.ImageBytes = imageBytes;
+            }
 
             await eventRepository.AddAsync(@event, CancellationToken.None);
 
@@ -83,7 +93,7 @@ namespace Linka.Api.Controllers
         }
     }
 
-    public sealed record CreateEventRequest(string Title, string Description, DateTime Date, DateTime StartDateTime, DateTime EndDateTime, CreateEventAddress Address, List<CreateEventJob> EventJobs);
+    public sealed record CreateEventRequest(string Title, string Description, DateTime Date, DateTime StartDateTime, DateTime EndDateTime, CreateEventAddress Address, List<CreateEventJob> EventJobs, string ImageBase64);
 
     public sealed record CreateEventAddress(Guid? Id, string? Nickname, string? Cep, string? Street, string? Neighborhood, string? State, string? City, int? Number);
 

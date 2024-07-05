@@ -157,7 +157,7 @@ public static class IQueryableExtensions
         var entityType = typeof(T);
         var navigationProperties = entityType
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Where(p => p.PropertyType.IsClass && p.PropertyType != typeof(string));
+            .Where(p => p.PropertyType.IsClass && p.PropertyType != typeof(string) && !p.PropertyType.IsArray && !p.PropertyType.IsEnum);
 
         foreach (var property in navigationProperties)
         {
