@@ -93,7 +93,7 @@ namespace Linka.Api.Controllers
         }
     }
 
-    public sealed record CreateEventRequest(string Title, string Description, DateTime Date, DateTime StartDateTime, DateTime EndDateTime, CreateEventAddress Address, List<CreateEventJob> EventJobs, string ImageBase64);
+    public sealed record CreateEventRequest(string Title, string Description, DateTime Date, DateTime StartDateTime, DateTime EndDateTime, CreateEventAddress Address, List<CreateEventJob> EventJobs, string? ImageBase64);
 
     public sealed record CreateEventAddress(Guid? Id, string? Nickname, string? Cep, string? Street, string? Neighborhood, string? State, string? City, int? Number);
 
