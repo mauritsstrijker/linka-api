@@ -23,5 +23,13 @@ namespace Linka.Api.Controllers
         {
             return await eventJobRepository.GetAsync(CancellationToken.None);
         }
+        [HttpGet]
+        [Route("event/{eventId}")]
+        public async Task<IEnumerable<EventJob>> GetByEventId(Guid eventId)
+        {
+            return await eventJobRepository.GetAsync(CancellationToken.None, e => e.Event.Id == eventId);
+        }
     }
+
+    public sealed record GetEventJobByEventId(Guid EventId);
 }

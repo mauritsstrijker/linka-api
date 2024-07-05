@@ -19,14 +19,10 @@ namespace Linka.Infrastructure.Data.Repositories
         {
             var query = _context.Set<T>().AsQueryable();
 
-            if (joins == null || joins.Length == 0)
-            {
+           
                 query = query.IncludeAll(); 
-            }
-            else
-            {
-                query = query.IncludeMultiple(joins);
-            }
+           
+          
 
             return query;
         }
