@@ -12,6 +12,9 @@ public class Context : DbContext, IContext
     public DbSet<Event> Events { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<EventJob> EventJobs { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Volunteer> Volunteers { get; set; }
+    public DbSet<Organization> Organizations { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 

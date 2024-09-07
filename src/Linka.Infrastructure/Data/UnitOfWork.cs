@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Linka.Application.Data;
 
 namespace Linka.Infrastructure.Data
 {

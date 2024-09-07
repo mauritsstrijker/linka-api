@@ -1,10 +1,10 @@
 ﻿using Linka.Application.Common;
-using Linka.Domain.Entities;
+using Linka.Application.Data;
+using Linka.Application.Repositories;
 using Linka.Infrastructure.Data;
 using Linka.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics;
 
 namespace Linka.Infrastructure.Extensions;
 internal static class ServiceCollectionExtensions
@@ -13,6 +13,8 @@ internal static class ServiceCollectionExtensions
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IVolunteerRepository, VolunteerRepository>();
     }
 
     internal static void SetupServices(this IServiceCollection services)

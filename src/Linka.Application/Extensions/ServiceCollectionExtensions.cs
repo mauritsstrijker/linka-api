@@ -1,16 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using FluentValidation;
 
 
 namespace Linka.Application.Extensions;
 public static class ServiceCollectionExtensions
 {
-    //public static IServiceCollection SetupValidation(this IServiceCollection services)
-    //{
-    //    services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    public static IServiceCollection SetupValidation(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-    //    return services;
-    //}
+        return services;
+    }
 
     public static IServiceCollection SetupMediatR(this IServiceCollection services)
     {

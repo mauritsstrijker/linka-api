@@ -1,4 +1,4 @@
-﻿namespace Linka.Infrastructure.Data
+﻿namespace Linka.Application.Data
 {
     public interface IUnitOfWork
     {
