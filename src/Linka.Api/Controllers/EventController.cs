@@ -3,6 +3,7 @@ using Linka.Application.Data;
 using Linka.Application.Mappers;
 using Linka.Domain.Entities;
 using Linka.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -23,6 +24,7 @@ namespace Linka.Api.Controllers
             return EventMapper.MapToEventDto(@event);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<EventDTO>> GetAll ()
         {

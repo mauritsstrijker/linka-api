@@ -13,7 +13,7 @@ namespace Linka.Api.Extensions.Facades
         {
             services.ConfigureInfrastructureApp(configuration);
 
-            //services.SetupAuthentication(configuration);
+            services.SetupAuthentication(configuration);
             services.SetupControllers(configuration);
 
             services.SetupSwagger(configuration);

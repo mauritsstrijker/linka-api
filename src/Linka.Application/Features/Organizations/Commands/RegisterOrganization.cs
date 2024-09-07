@@ -7,56 +7,56 @@ using Linka.Domain.Entities;
 using Linka.Domain.Enums;
 using MediatR;
 
-namespace Linka.Application.Features.Volunteers.Commands
+namespace Linka.Application.Features.Organizations.Commands
 {
-    public sealed record RegisterVolunteerRequest
+    public sealed record RegisterOrganizationRequest
         (
             string Username,
-            string Email,
             string Password,
-            string CPF,
-            string Name,
-            string Surname,
-            CreateAddressDto Address,
-            DateTime DathOfBirth
+            string Email,
+            string CNPJ,
+            string CompanyName,
+            string TradingName,
+            string Phone,
+            CreateAddressDto Address
         )
-        : IRequest<RegisterVolunteerResponse>;
+        : IRequest<RegisterOrganizationResponse>;
 
-    public sealed record RegisterVolunteerResponse();
+    public sealed record RegisterOrganizationResponse();
 
-    public sealed class RegisterVolunteerHandler
+    public sealed class RegisterOrganizationHandler
         (
         IUserRepository userRepository,
-        IVolunteerRepository volunteerRepository,
+        IOrganizationRepository organizationRepository,
         IRepository<Address> addressRepository,
         IUnitOfWork unitOfWork
-        ) : IRequestHandler<RegisterVolunteerRequest, RegisterVolunteerResponse>
+        ) : IRequestHandler<RegisterOrganizationRequest, RegisterOrganizationResponse>
     {
-        public async Task<RegisterVolunteerResponse> Handle(RegisterVolunteerRequest request, CancellationToken cancellationToken)
+        public async Task<RegisterOrganizationResponse> Handle(RegisterOrganizationRequest request, CancellationToken cancellationToken)
         {
             await ValidateUniquenessAsync(request, cancellationToken);
 
             var user = await CreateUser(request, cancellationToken);
-            
+
             var address = await CreateAddress(request, cancellationToken);
 
-            await CreateVolunteer(request, address, user, cancellationToken);
+            await CreateOrganization(request, address, user, cancellationToken);
 
             await unitOfWork.Commit(cancellationToken);
 
-            return new RegisterVolunteerResponse();
+            return new RegisterOrganizationResponse();
         }
 
-        private async Task<User> CreateUser(RegisterVolunteerRequest request, CancellationToken cancellationToken)
+        private async Task<User> CreateUser(RegisterOrganizationRequest request, CancellationToken cancellationToken)
         {
-            var user = User.Create(request.Username, request.Email, request.Password, UserType.Volunteer);
+            var user = User.Create(request.Username, request.Email, request.Password, UserType.Organization);
 
             await userRepository.Insert(user, cancellationToken);
 
             return user;
         }
 
-        private async Task<Address> CreateAddress(RegisterVolunteerRequest request, CancellationToken cancellationToken)
+        private async Task<Address> CreateAddress(RegisterOrganizationRequest request, CancellationToken cancellationToken)
         {
             var address = Address.Create
                  (
@@ -74,17 +74,17 @@ namespace Linka.Application.Features.Volunteers.Commands
             return address;
         }
 
-        private async Task CreateVolunteer(RegisterVolunteerRequest request, Address address, User user, CancellationToken cancellationToken)
+        private async Task CreateOrganization(RegisterOrganizationRequest request, Address address, User user, CancellationToken cancellationToken)
         {
-            var volunteer = Volunteer.Create(request.CPF, request.Name, request.Surname, address, request.DathOfBirth, user);
+            var organization = Organization.Create(request.CNPJ, request.CompanyName, request.TradingName, request.Phone, address, user);
 
-            await volunteerRepository.Insert(volunteer, cancellationToken);
+            await organizationRepository.Insert(organization, cancellationToken);
         }
 
-        private async Task ValidateUniquenessAsync(RegisterVolunteerRequest request, CancellationToken cancellationToken)
+        private async Task ValidateUniquenessAsync(RegisterOrganizationRequest request, CancellationToken cancellationToken)
         {
             await EnsureUserIsUniqueAsync(request.Username, request.Email, cancellationToken);
-            await EnsureCPFIsUniqueAsync(request.CPF, cancellationToken);
+            await EnsureCNPJIsUniqueAsync(request.CNPJ, cancellationToken);
         }
 
         private async Task EnsureUserIsUniqueAsync(string username, string email, CancellationToken cancellationToken)
@@ -100,18 +100,18 @@ namespace Linka.Application.Features.Volunteers.Commands
             }
         }
 
-        private async Task EnsureCPFIsUniqueAsync(string cpf, CancellationToken cancellationToken)
+        private async Task EnsureCNPJIsUniqueAsync(string cnpj, CancellationToken cancellationToken)
         {
-            if (await volunteerRepository.GetByCPF(cpf.Trim(), cancellationToken) is not null)
+            if (await organizationRepository.GetByCNPJ(cnpj.Trim(), cancellationToken) is not null)
             {
-                throw new Exception("CPF já cadastrado.");
+                throw new Exception("CNPJ já cadastrado.");
             }
         }
     }
 
-    public sealed class RegisterVolunteerValidator : AbstractValidator<RegisterVolunteerRequest>
+    public sealed class RegisterOrganizationValidator : AbstractValidator<RegisterOrganizationRequest>
     {
-        public RegisterVolunteerValidator()
+        public RegisterOrganizationValidator()
         {
             RuleFor(x => x.Username)
             .NotEmpty().WithMessage("Nome de usuário é obrigatório.")
@@ -125,15 +125,18 @@ namespace Linka.Application.Features.Volunteers.Commands
                 .NotEmpty().WithMessage("Senha é obrigatória.")
                 .MinimumLength(6).WithMessage("Senha deve ter pelo menos 6 caracteres.");
 
-            RuleFor(x => x.CPF)
-                .NotEmpty().WithMessage("CPF é obrigatório.")
-                .Length(11).WithMessage("CPF deve ter 11 caracteres.");
+            RuleFor(x => x.CNPJ)
+                .NotEmpty().WithMessage("CNPJ é obrigatório.")
+                .Length(14).WithMessage("CNPJ deve ter 14 caracteres.");
 
-            RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Nome é obrigatório.");
+            RuleFor(x => x.CompanyName)
+                .NotEmpty().WithMessage("Nome da empresa é obrigatório.");
 
-            RuleFor(x => x.Surname)
-                .NotEmpty().WithMessage("Sobrenome é obrigatório.");
+            RuleFor(x => x.TradingName)
+                .NotEmpty().WithMessage("Nome fantasia é obrigatório.");
+
+            RuleFor(x => x.Phone)
+                .NotEmpty().WithMessage("Telefone é obrigatório.");
 
             RuleFor(x => x.Address)
                 .NotNull().WithMessage("Endereço é obrigatório.")
@@ -161,10 +164,6 @@ namespace Linka.Application.Features.Volunteers.Commands
                     address.RuleFor(x => x.Nickname)
                         .MaximumLength(50).WithMessage("Apelido deve ter no máximo 50 caracteres.");
                 });
-
-            RuleFor(x => x.DathOfBirth)
-                .NotEmpty().WithMessage("Data de nascimento é obrigatória.")
-                .LessThan(DateTime.Now).WithMessage("Data de nascimento deve estar no passado.");
         }
     }
 }

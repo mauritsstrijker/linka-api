@@ -10,5 +10,27 @@ namespace Linka.Domain.Entities
         public string Phone { get; set; }
         public Address Address { get; set; }
         public User User { get; set; }
+
+        public static Organization Create
+            (
+            string cnpj,
+            string companyName,
+            string tradingName,
+            string phone,
+            Address address,
+            User user
+            )
+        {
+            return new Organization
+            {
+                Id = Guid.NewGuid(),
+                CNPJ = cnpj,
+                CompanyName = companyName,
+                TradingName = tradingName,
+                Phone = phone,
+                Address = address,
+                User = user
+            };
+        }
     }
 }

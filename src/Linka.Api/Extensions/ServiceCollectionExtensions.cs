@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Linka.Domain.Enums;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace Linka.Api.Extensions
 {
@@ -43,43 +47,35 @@ namespace Linka.Api.Extensions
             return services;
         }
 
-        //public static IServiceCollection SetupAuthentication(this IServiceCollection services, IConfiguration configuration)
-        //{
-        //    services.AddAuthentication(x =>
-        //    {
-        //        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        //        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        //    }).AddJwtBearer(x =>
-        //    {
-        //        x.SaveToken = true;
-        //        x.TokenValidationParameters = new TokenValidationParameters
-        //        {
-        //            ValidateIssuerSigningKey = true,
-        //            ValidateAudience = false,
-        //            ValidateIssuer = false,
-        //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration[AuthorizationSecretPath]))
-        //        };
+        public static IServiceCollection SetupAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration[AuthorizationSecretPath]))
+                };
 
-        //        x.Events = new JwtBearerEvents
-        //        {
-        //            OnMessageReceived = context =>
-        //            {
-        //                var accessToken = context.Request.Query["access_token"];
+            });
 
-        //                // If the request is for our hub...
-        //                var path = context.HttpContext.Request.Path;
-        //                if (!string.IsNullOrEmpty(accessToken) &&
-        //                    (path.StartsWithSegments("/hubs")))
-        //                {
-        //                    // Read the token out of the query string
-        //                    context.Token = accessToken;
-        //                }
-        //                return Task.CompletedTask;
-        //            }
-        //        };
-        //    });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Volunteer", policy =>
+                    policy.RequireClaim("UserType", ((int)UserType.Volunteer).ToString()));
 
-        //    return services;
-        //}
+                options.AddPolicy("Organization", policy =>
+                    policy.RequireClaim("UserType", ((int)UserType.Organization).ToString()));
+            });
+
+            return services;
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Linka.Application.Features.Volunteers.Commands;
-using Linka.Domain.Entities;
+﻿using Linka.Application.Features.Organizations.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,13 +7,13 @@ namespace Linka.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VolunteerController(IMediator mediator) : ControllerBase
+    public class OrganizationController(IMediator mediator) : ControllerBase
     {
         [AllowAnonymous]
         [HttpPost("registrar")]
-        public async Task<RegisterVolunteerResponse> Register
+        public async Task<RegisterOrganizationResponse> Register
             (
-            [FromBody] RegisterVolunteerRequest request,
+            [FromBody] RegisterOrganizationRequest request,
             CancellationToken cancellationToken
             )
         {
