@@ -4,9 +4,9 @@ namespace Linka.Infrastructure.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DbContext _context;
+        private readonly Context _context;
 
-        public UnitOfWork(DbContext context)
+        public UnitOfWork(Context context)
         {
             _context = context;
         }
