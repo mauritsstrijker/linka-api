@@ -11,9 +11,7 @@ internal static class ServiceCollectionExtensions
 {
     internal static void SetupRepositories(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IRepository<Event>), typeof(Repository<Event>));
-        services.AddScoped(typeof(IRepository<Address>), typeof(Repository<Address>));
-        services.AddScoped(typeof(IRepository<EventJob>), typeof(Repository<EventJob>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
     internal static void SetupServices(this IServiceCollection services)

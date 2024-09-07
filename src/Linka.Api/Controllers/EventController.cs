@@ -1,31 +1,31 @@
 using Linka.Application.Common;
 using Linka.Application.Mappers;
 using Linka.Domain.Entities;
+using Linka.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections;
 
 namespace Linka.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EventController(IRepository<Event> eventRepository, IRepository<EventJob> eventJobRepository, IRepository<Address> addressRepository) : ControllerBase
+    public class EventController(IRepository<Event> eventRepository, IRepository<EventJob> eventJobRepository, IRepository<Address> addressRepository, IUnitOfWork unitOfWork) : ControllerBase
     {
         [HttpGet]
         [Route("{eventId}")]
-        public async Task<EventModel> GetById
+        public async Task<EventDTO> GetById
             (
             Guid eventId
             )
         {
-            var @event = await eventRepository.GetFirstAsync(a => a.Id == eventId, CancellationToken.None);
+            var @event = await eventRepository.Get(eventId, CancellationToken.None);
             return EventMapper.MapToEventDto(@event);
         }
 
         [HttpGet]
-        public async Task<IEnumerable<EventModel>> GetAll ()
+        public async Task<IEnumerable<EventDTO>> GetAll ()
         {
-            var events = await eventRepository.GetAsync(CancellationToken.None);
+            var events = await eventRepository.GetAll(CancellationToken.None);
             return events.Select(e => EventMapper.MapToEventDto(e));
         }
 
@@ -50,11 +50,11 @@ namespace Linka.Api.Controllers
                     Number = request.Address.Number ?? 0,
                 };
 
-                await addressRepository.AddAsync(address, CancellationToken.None);
+                await addressRepository.Insert(address, CancellationToken.None);
 
             } else
             {
-                address = await addressRepository.GetFirstAsync(a => a.Id == request.Address.Id, CancellationToken.None);
+                address = await addressRepository.Get(request.Address.Id.Value, CancellationToken.None);
             }
 
             var @event = new Event
@@ -73,7 +73,7 @@ namespace Linka.Api.Controllers
                 @event.ImageBytes = imageBytes;
             }
 
-            await eventRepository.AddAsync(@event, CancellationToken.None);
+            await eventRepository.Insert(@event, CancellationToken.None);
 
             foreach (var job in request.EventJobs) {
                 EventJob eventJob = new()
@@ -84,10 +84,10 @@ namespace Linka.Api.Controllers
                     MaxVolunteers = job.MaxVolunteers,
                     Event = @event
                 };
-                await eventJobRepository.AddAsync(eventJob, CancellationToken.None);
+                await eventJobRepository.Insert(eventJob, CancellationToken.None);
             }
 
-            await eventRepository.SaveChangesAsync(CancellationToken.None);
+            await unitOfWork.Commit(CancellationToken.None);
 
             return @event;
         }

@@ -16,18 +16,20 @@ namespace Linka.Api.Controllers
             Guid eventJobId
             )
         {
-            return await eventJobRepository.GetFirstAsync(a => a.Id == eventJobId, CancellationToken.None);
+            return await eventJobRepository.Get(eventJobId, CancellationToken.None);
         }
         [HttpGet]
         public async Task<IEnumerable<EventJob>> GetAll()
         {
-            return await eventJobRepository.GetAsync(CancellationToken.None);
+            return await eventJobRepository.GetAll(CancellationToken.None);
         }
         [HttpGet]
         [Route("event/{eventId}")]
         public async Task<IEnumerable<EventJob>> GetByEventId(Guid eventId)
         {
-            return await eventJobRepository.GetAsync(CancellationToken.None, e => e.Event.Id == eventId);
+            var eventJobs = await eventJobRepository.GetAll(CancellationToken.None);
+
+            return eventJobs.Where(e => e.Event.Id == eventId).ToList();   
         }
     }
 

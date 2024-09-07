@@ -15,12 +15,12 @@ namespace Linka.Api.Controllers
             Guid addressId
             )
         {
-            return await addressRepository.GetFirstAsync(a => a.Id == addressId, CancellationToken.None);
+            return await addressRepository.Get(addressId, CancellationToken.None);
         }
         [HttpGet]
         public async Task<IEnumerable<Address>> GetAll()
         {
-            return await addressRepository.GetAsync(CancellationToken.None);
+            return await addressRepository.GetAll(CancellationToken.None);
         }
     }
 }
