@@ -10,7 +10,7 @@ namespace Linka.Api.Controllers
     public class UserController(IMediator mediator) : ControllerBase
     {
         [AllowAnonymous]
-        [HttpPost("registrar")]
+        [HttpPost("login")]
         public async Task<AuthenticateResponse> Login
             (
             [FromBody] AuthenticateRequest request,
