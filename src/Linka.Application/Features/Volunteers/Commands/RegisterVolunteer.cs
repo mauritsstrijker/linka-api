@@ -24,7 +24,7 @@ namespace Linka.Application.Features.Volunteers.Commands
 
     public sealed record RegisterVolunteerResponse();
 
-    public sealed class RegisterVolunteerHandler
+    public sealed class RegisterVolunteerHandler 
         (
         IUserRepository userRepository,
         IVolunteerRepository volunteerRepository,

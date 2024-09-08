@@ -15,6 +15,7 @@ internal static class ServiceCollectionExtensions
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+        services.AddScoped<IOrganizationRepository, OrganizationRepository>();
     }
 
     internal static void SetupServices(this IServiceCollection services)
