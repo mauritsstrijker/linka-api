@@ -37,11 +37,11 @@ namespace Linka.Api.Extensions
         {
             services.AddControllers();
             services.AddEndpointsApiExplorer();
-            services.AddCors(p => p.AddPolicy("corspolicy", build =>
+            services.AddCors(p => p.AddDefaultPolicy(builder =>
             {
-                build.AllowAnyOrigin()
-                     .AllowAnyMethod()
-                     .AllowAnyHeader();
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
             }));
 
             return services;
