@@ -1,5 +1,6 @@
 ﻿using Linka.Application.Common;
 using Linka.Application.Data;
+using Linka.Application.Helpers;
 using Linka.Application.Repositories;
 using Linka.Infrastructure.Data;
 using Linka.Infrastructure.Data.Repositories;
@@ -16,6 +17,7 @@ internal static class ServiceCollectionExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+        services.AddScoped<JwtBuilder>();
     }
 
     internal static void SetupServices(this IServiceCollection services)

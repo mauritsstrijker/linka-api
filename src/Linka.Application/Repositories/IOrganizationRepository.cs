@@ -6,5 +6,6 @@ namespace Linka.Application.Repositories
     public interface IOrganizationRepository : IRepository<Organization>
     {
         Task<Organization> GetByCNPJ(string cnpj, CancellationToken cancellationToken);
+        Task<Organization> GetByUserId(Guid userId, CancellationToken cancellationToken);
     }
 }

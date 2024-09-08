@@ -8,7 +8,12 @@ namespace Linka.Infrastructure.Data.Repositories
     {
         public Task<Organization> GetByCNPJ(string cnpj, CancellationToken cancellationToken)
         {
-            return _context.Organizations.FirstOrDefaultAsync(v => v.CNPJ == cnpj, cancellationToken);
+            return _context.Organizations.FirstOrDefaultAsync(o => o.CNPJ == cnpj, cancellationToken);
+        }
+
+        public Task<Organization> GetByUserId(Guid userId, CancellationToken cancellationToken)
+        {
+            return _context.Organizations.FirstOrDefaultAsync(o => o.User.Id == userId, cancellationToken);
         }
     }
 }

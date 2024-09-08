@@ -10,5 +10,10 @@ namespace Linka.Infrastructure.Data.Repositories
         {
             return _context.Volunteers.FirstOrDefaultAsync(v => v.CPF == cpf, cancellationToken);
         }
+
+        public Task<Volunteer> GetByUserId(Guid userId, CancellationToken cancellationToken)
+        {
+            return _context.Volunteers.FirstOrDefaultAsync(v => v.User.Id == userId, cancellationToken);
+        }
     }
 }
