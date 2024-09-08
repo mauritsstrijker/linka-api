@@ -69,10 +69,10 @@ namespace Linka.Api.Extensions
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Volunteer", policy =>
-                    policy.RequireClaim("UserType", ((int)UserType.Volunteer).ToString()));
+                    policy.RequireClaim("type", "volunteer"));
 
                 options.AddPolicy("Organization", policy =>
-                    policy.RequireClaim("UserType", ((int)UserType.Organization).ToString()));
+                    policy.RequireClaim("type", "organization"));
             });
 
             return services;
