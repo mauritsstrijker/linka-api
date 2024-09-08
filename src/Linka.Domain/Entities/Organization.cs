@@ -10,6 +10,8 @@ namespace Linka.Domain.Entities
         public string Phone { get; set; }
         public Address Address { get; set; }
         public User User { get; set; }
+        public byte[]? ProfilePictureBytes { get; set; }
+        public string? ProfilePictureExtension { get; set; }
 
         public static Organization Create
             (
@@ -18,7 +20,9 @@ namespace Linka.Domain.Entities
             string tradingName,
             string phone,
             Address address,
-            User user
+            User user,
+            byte[]? profilePictureBytes = null,
+            string? profilePictureExtension = null
             )
         {
             return new Organization
@@ -29,7 +33,9 @@ namespace Linka.Domain.Entities
                 TradingName = tradingName,
                 Phone = phone,
                 Address = address,
-                User = user
+                User = user,
+                ProfilePictureBytes = profilePictureBytes,
+                ProfilePictureExtension = profilePictureExtension
             };
         }
     }

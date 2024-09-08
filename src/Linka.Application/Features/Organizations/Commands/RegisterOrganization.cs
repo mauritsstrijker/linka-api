@@ -2,6 +2,7 @@
 using Linka.Application.Common;
 using Linka.Application.Data;
 using Linka.Application.Dtos;
+using Linka.Application.Helpers;
 using Linka.Application.Repositories;
 using Linka.Domain.Entities;
 using Linka.Domain.Enums;
@@ -10,17 +11,19 @@ using MediatR;
 namespace Linka.Application.Features.Organizations.Commands
 {
     public sealed record RegisterOrganizationRequest
-        (
-            string Username,
-            string Password,
-            string Email,
-            string CNPJ,
-            string CompanyName,
-            string TradingName,
-            string Phone,
-            CreateAddressDto Address
-        )
-        : IRequest<RegisterOrganizationResponse>;
+     (
+         string CNPJ,
+         string CompanyName,
+         string TradingName,
+         string Phone,
+         string Username,
+         string Password,
+         string Email,
+         CreateAddressDto Address,
+         byte[]? ProfilePictureBytes
+     )
+     : BaseRegisterRequest(Username, Password, Email, Address, ProfilePictureBytes), IRequest<RegisterOrganizationResponse>;
+
 
     public sealed record RegisterOrganizationResponse();
 
@@ -76,7 +79,11 @@ namespace Linka.Application.Features.Organizations.Commands
 
         private async Task CreateOrganization(RegisterOrganizationRequest request, Address address, User user, CancellationToken cancellationToken)
         {
-            var organization = Organization.Create(request.CNPJ, request.CompanyName, request.TradingName, request.Phone, address, user);
+            var profilePictureExtension = request.ProfilePictureBytes != null
+                ? ProfilePictureHelper.GetImageExtension(request.ProfilePictureBytes)
+                : null;
+
+            var organization = Organization.Create(request.CNPJ, request.CompanyName, request.TradingName, request.Phone, address, user, request.ProfilePictureBytes, profilePictureExtension);
 
             await organizationRepository.Insert(organization, cancellationToken);
         }
@@ -164,6 +171,11 @@ namespace Linka.Application.Features.Organizations.Commands
                     address.RuleFor(x => x.Nickname)
                         .MaximumLength(50).WithMessage("Apelido deve ter no máximo 50 caracteres.");
                 });
+
+            RuleFor(x => x.ProfilePictureBytes)
+              .MustAsync(async (bytes, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(bytes))
+              .When(x => x.ProfilePictureBytes != null)
+              .WithMessage("Imagem de perfil inválida.");
         }
     }
 }

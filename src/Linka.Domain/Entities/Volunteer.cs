@@ -16,6 +16,8 @@ namespace Linka.Domain.Entities
         public User User { get; set; }
         public int Points { get; set; }
         public int AllTimePoints { get; set; }
+        public byte[]? ProfilePictureBytes { get; set; }
+        public string? ProfilePictureExtension { get; set; }
 
         public static Volunteer Create
             (
@@ -24,7 +26,9 @@ namespace Linka.Domain.Entities
             string surname,
             Address address,
             DateTime dateOfBirth,
-            User user
+            User user,
+            byte[]? profilePictureBytes = null,
+            string? profilePictureExtension = null
             )
         {
             return new Volunteer
@@ -37,7 +41,9 @@ namespace Linka.Domain.Entities
                 DateOfBirth = dateOfBirth,
                 User = user,
                 Points = 0,
-                AllTimePoints = 0
+                AllTimePoints = 0,
+                ProfilePictureBytes = profilePictureBytes,
+                ProfilePictureExtension = profilePictureExtension
             };
         }
     }

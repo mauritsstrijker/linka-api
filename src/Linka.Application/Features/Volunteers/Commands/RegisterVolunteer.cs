@@ -2,6 +2,7 @@
 using Linka.Application.Common;
 using Linka.Application.Data;
 using Linka.Application.Dtos;
+using Linka.Application.Helpers;
 using Linka.Application.Repositories;
 using Linka.Domain.Entities;
 using Linka.Domain.Enums;
@@ -18,9 +19,10 @@ namespace Linka.Application.Features.Volunteers.Commands
             string Name,
             string Surname,
             CreateAddressDto Address,
-            DateTime DathOfBirth
+            DateTime DathOfBirth,
+            byte[]? ProfilePictureBytes,
         )
-        : IRequest<RegisterVolunteerResponse>;
+        : BaseRegisterRequest(Username, Password, Email, Address, ProfilePictureBytes), IRequest<RegisterVolunteerResponse>;
 
     public sealed record RegisterVolunteerResponse();
 
@@ -76,7 +78,11 @@ namespace Linka.Application.Features.Volunteers.Commands
 
         private async Task CreateVolunteer(RegisterVolunteerRequest request, Address address, User user, CancellationToken cancellationToken)
         {
-            var volunteer = Volunteer.Create(request.CPF, request.Name, request.Surname, address, request.DathOfBirth, user);
+            var profilePictureExtension = request.ProfilePictureBytes != null
+                ? ProfilePictureHelper.GetImageExtension(request.ProfilePictureBytes)
+                : null;
+
+            var volunteer = Volunteer.Create(request.CPF, request.Name, request.Surname, address, request.DathOfBirth, user, request.ProfilePictureBytes, profilePictureExtension);
 
             await volunteerRepository.Insert(volunteer, cancellationToken);
         }
@@ -165,6 +171,11 @@ namespace Linka.Application.Features.Volunteers.Commands
             RuleFor(x => x.DathOfBirth)
                 .NotEmpty().WithMessage("Data de nascimento é obrigatória.")
                 .LessThan(DateTime.Now).WithMessage("Data de nascimento deve estar no passado.");
+
+            RuleFor(x => x.ProfilePictureBytes)
+              .MustAsync(async (bytes, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(bytes))
+              .When(x => x.ProfilePictureBytes != null)
+              .WithMessage("Imagem de perfil inválida.");
         }
     }
 }
