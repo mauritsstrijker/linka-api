@@ -16,10 +16,10 @@ namespace Linka.Application.Features.Users.Commands
         JwtBuilder jwtBuilder
         ) : IRequestHandler<AuthenticateRequest, AuthenticateResponse>
     {
-        private string AuthenticationFailedMessage = "Verifique seus dados.";
+        private readonly string FailedAuthenticationMessage = "Verifique seus dados.";
         public async Task<AuthenticateResponse> Handle(AuthenticateRequest request, CancellationToken cancellationToken)
         {
-            var user = await userRepository.GetByUsername(request.Username, cancellationToken) ?? throw new Exception(AuthenticationFailedMessage);
+            var user = await userRepository.GetByUsername(request.Username, cancellationToken) ?? throw new Exception(FailedAuthenticationMessage);
 
             if (PasswordHelper.VerifyPassword(request.Password, user.Password))
             {
@@ -29,7 +29,7 @@ namespace Linka.Application.Features.Users.Commands
             }
             else
             {
-                throw new Exception(AuthenticationFailedMessage);
+                throw new Exception(FailedAuthenticationMessage);
             }
         }
     }
