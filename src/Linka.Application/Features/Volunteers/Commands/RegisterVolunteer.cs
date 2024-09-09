@@ -20,7 +20,7 @@ namespace Linka.Application.Features.Volunteers.Commands
             string Surname,
             CreateAddressDto Address,
             DateTime DathOfBirth,
-            byte[]? ProfilePictureBytes,
+            byte[]? ProfilePictureBytes
         )
         : BaseRegisterRequest(Username, Password, Email, Address, ProfilePictureBytes), IRequest<RegisterVolunteerResponse>;
 
