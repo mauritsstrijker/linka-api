@@ -8,6 +8,6 @@ namespace Linka.Application.Common
           string Password,
           string Email,
           CreateAddressDto Address,
-          byte[]? ProfilePictureBytes
+          string? ProfilePictureBase64
         );
 }

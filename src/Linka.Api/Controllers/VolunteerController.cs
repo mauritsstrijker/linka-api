@@ -1,4 +1,6 @@
-﻿using Linka.Application.Features.Volunteers.Commands;
+﻿using Azure.Core;
+using Linka.Application.Features.Volunteers.Commands;
+using Linka.Application.Features.Volunteers.Queries;
 using Linka.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +21,17 @@ namespace Linka.Api.Controllers
             )
         {
             return await mediator.Send(request, cancellationToken);
+        }
+
+        [Authorize]
+        [HttpGet("{Id}")]
+        public async Task<GetVolunteerByIdResponse> GetVolunteerById
+            (
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new GetVolunteerByIdRequest(id), cancellationToken);
         }
     }
 }

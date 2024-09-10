@@ -20,9 +20,9 @@ namespace Linka.Application.Features.Volunteers.Commands
             string Surname,
             CreateAddressDto Address,
             DateTime DathOfBirth,
-            byte[]? ProfilePictureBytes
+            string? ProfilePictureBase64
         )
-        : BaseRegisterRequest(Username, Password, Email, Address, ProfilePictureBytes), IRequest<RegisterVolunteerResponse>;
+        : BaseRegisterRequest(Username, Password, Email, Address, ProfilePictureBase64), IRequest<RegisterVolunteerResponse>;
 
     public sealed record RegisterVolunteerResponse();
 
@@ -78,11 +78,13 @@ namespace Linka.Application.Features.Volunteers.Commands
 
         private async Task CreateVolunteer(RegisterVolunteerRequest request, Address address, User user, CancellationToken cancellationToken)
         {
-            var profilePictureExtension = request.ProfilePictureBytes != null
-                ? ProfilePictureHelper.GetImageExtension(request.ProfilePictureBytes)
+            var profilePictureBytes = request.ProfilePictureBase64 is null ? null : Convert.FromBase64String(request.ProfilePictureBase64);
+
+            var profilePictureExtension = profilePictureBytes != null
+                ? ProfilePictureHelper.GetImageExtension(profilePictureBytes)
                 : null;
 
-            var volunteer = Volunteer.Create(request.CPF, request.Name, request.Surname, address, request.DathOfBirth, user, request.ProfilePictureBytes, profilePictureExtension);
+            var volunteer = Volunteer.Create(request.CPF, request.Name, request.Surname, address, request.DathOfBirth, user, profilePictureBytes, profilePictureExtension);
 
             await volunteerRepository.Insert(volunteer, cancellationToken);
         }
@@ -172,9 +174,9 @@ namespace Linka.Application.Features.Volunteers.Commands
                 .NotEmpty().WithMessage("Data de nascimento é obrigatória.")
                 .LessThan(DateTime.Now).WithMessage("Data de nascimento deve estar no passado.");
 
-            RuleFor(x => x.ProfilePictureBytes)
-              .MustAsync(async (bytes, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(bytes))
-              .When(x => x.ProfilePictureBytes != null)
+            RuleFor(x => x.ProfilePictureBase64)
+              .MustAsync(async (base64, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(Convert.FromBase64String(base64)))
+              .When(x => x.ProfilePictureBase64 != null)
               .WithMessage("Imagem de perfil inválida.");
         }
     }

@@ -20,9 +20,9 @@ namespace Linka.Application.Features.Organizations.Commands
          string Password,
          string Email,
          CreateAddressDto Address,
-         byte[]? ProfilePictureBytes
+         string? ProfilePictureBase64
      )
-     : BaseRegisterRequest(Username, Password, Email, Address, ProfilePictureBytes), IRequest<RegisterOrganizationResponse>;
+     : BaseRegisterRequest(Username, Password, Email, Address, ProfilePictureBase64), IRequest<RegisterOrganizationResponse>;
 
 
     public sealed record RegisterOrganizationResponse();
@@ -79,11 +79,13 @@ namespace Linka.Application.Features.Organizations.Commands
 
         private async Task CreateOrganization(RegisterOrganizationRequest request, Address address, User user, CancellationToken cancellationToken)
         {
-            var profilePictureExtension = request.ProfilePictureBytes != null
-                ? ProfilePictureHelper.GetImageExtension(request.ProfilePictureBytes)
+            var profilePictureBytes = request.ProfilePictureBase64 is null ? null : Convert.FromBase64String(request.ProfilePictureBase64);
+
+            var profilePictureExtension = profilePictureBytes != null
+                ? ProfilePictureHelper.GetImageExtension(profilePictureBytes)
                 : null;
 
-            var organization = Organization.Create(request.CNPJ, request.CompanyName, request.TradingName, request.Phone, address, user, request.ProfilePictureBytes, profilePictureExtension);
+            var organization = Organization.Create(request.CNPJ, request.CompanyName, request.TradingName, request.Phone, address, user, profilePictureBytes, profilePictureExtension);
 
             await organizationRepository.Insert(organization, cancellationToken);
         }
@@ -172,9 +174,9 @@ namespace Linka.Application.Features.Organizations.Commands
                         .MaximumLength(50).WithMessage("Apelido deve ter no máximo 50 caracteres.");
                 });
 
-            RuleFor(x => x.ProfilePictureBytes)
-              .MustAsync(async (bytes, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(bytes))
-              .When(x => x.ProfilePictureBytes != null)
+            RuleFor(x => x.ProfilePictureBase64)
+              .MustAsync(async (base64, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(Convert.FromBase64String(base64)))
+              .When(x => x.ProfilePictureBase64 != null)
               .WithMessage("Imagem de perfil inválida.");
         }
     }
