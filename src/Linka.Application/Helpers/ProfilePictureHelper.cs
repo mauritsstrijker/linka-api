@@ -25,14 +25,13 @@ public static class ProfilePictureHelper
         {
             using var stream = new MemoryStream(imageBytes);
             using var image = await Image.LoadAsync(stream);
-            IImageFormat format = Image.DetectFormat(stream);
 
             if (image.Width > MaxWidth || image.Height > MaxHeight)
             {
                 return false;
             }
 
-            return format is JpegFormat || format is PngFormat;
+            return image.Metadata.DecodedImageFormat is JpegFormat || image.Metadata.DecodedImageFormat is PngFormat;
         }
         catch (Exception)
         {

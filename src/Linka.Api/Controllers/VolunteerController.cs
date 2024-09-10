@@ -24,7 +24,7 @@ namespace Linka.Api.Controllers
         }
 
         [Authorize]
-        [HttpGet("{Id}")]
+        [HttpGet("{id}")]
         public async Task<GetVolunteerByIdResponse> GetVolunteerById
             (
             [FromRoute] Guid id,
