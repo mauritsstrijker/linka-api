@@ -56,9 +56,9 @@ namespace Linka.Application.Features.Events.Commands
             else
             {
                 address = Address.Create(request.Address.Cep, request.Address.City, request.Address.Street, request.Address.Number ?? default, request.Address.Neighborhood, request.Address.State, request.Address.Nickname);
+              
+                await addressRepository.Insert(address, cancellationToken);
             }
-
-            await addressRepository.Insert(address, cancellationToken);
 
             return address;
         }
