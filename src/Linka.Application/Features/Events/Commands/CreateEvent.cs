@@ -2,6 +2,7 @@
 using Linka.Application.Common;
 using Linka.Application.Data;
 using Linka.Application.Dtos;
+using Linka.Application.Helpers;
 using Linka.Domain.Entities;
 using MediatR;
 using System.Net;
@@ -144,7 +145,10 @@ namespace Linka.Application.Features.Events.Commands
                     });
                 });
 
-            //Validar imagem
+            RuleFor(x => x.ImageBase64)
+              .MustAsync(async (base64, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(Convert.FromBase64String(base64), 1080, 450))
+              .When(x => x.ImageBase64 != null)
+              .WithMessage("Imagem de perfil inválida.");
         }
         private bool NotBeInThePast(DateTime startDateTime)
         {

@@ -10,11 +10,9 @@ using System.Threading.Tasks;
 
 public static class ProfilePictureHelper
 {
-    private const int MaxWidth = 600;
-    private const int MaxHeight = 600;
     private const int MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
-    public static async Task<bool> ValidateImageAsync(byte[] imageBytes)
+    public static async Task<bool> ValidateImageAsync(byte[] imageBytes, int maxWidth, int maxHeight)
     {
         if (imageBytes == null || imageBytes.Length == 0 || imageBytes.Length > MaxFileSize)
         {
@@ -26,7 +24,7 @@ public static class ProfilePictureHelper
             using var stream = new MemoryStream(imageBytes);
             using var image = await Image.LoadAsync(stream);
 
-            if (image.Width > MaxWidth || image.Height > MaxHeight)
+            if (image.Width > maxWidth || image.Height > maxHeight)
             {
                 return false;
             }

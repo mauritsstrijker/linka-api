@@ -175,7 +175,7 @@ namespace Linka.Application.Features.Organizations.Commands
                 });
 
             RuleFor(x => x.ProfilePictureBase64)
-              .MustAsync(async (base64, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(Convert.FromBase64String(base64)))
+              .MustAsync(async (base64, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(Convert.FromBase64String(base64), 600, 600))
               .When(x => x.ProfilePictureBase64 != null)
               .WithMessage("Imagem de perfil inválida.");
         }

@@ -175,7 +175,7 @@ namespace Linka.Application.Features.Volunteers.Commands
                 .LessThan(DateTime.Now).WithMessage("Data de nascimento deve estar no passado.");
 
             RuleFor(x => x.ProfilePictureBase64)
-              .MustAsync(async (base64, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(Convert.FromBase64String(base64)))
+              .MustAsync(async (base64, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(Convert.FromBase64String(base64), 600, 600))
               .When(x => x.ProfilePictureBase64 != null)
               .WithMessage("Imagem de perfil inválida.");
         }
