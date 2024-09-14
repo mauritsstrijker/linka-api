@@ -17,6 +17,7 @@ internal static class ServiceCollectionExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<JwtBuilder>();
     }
 

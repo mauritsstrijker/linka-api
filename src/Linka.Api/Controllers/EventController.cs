@@ -2,6 +2,7 @@ using Linka.Application.Common;
 using Linka.Application.Data;
 using Linka.Application.Features.Events.Commands;
 using Linka.Application.Mappers;
+using Linka.Application.Repositories;
 using Linka.Domain.Entities;
 using Linka.Infrastructure.Data;
 using MediatR;
@@ -13,7 +14,7 @@ namespace Linka.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EventController(IRepository<Event> eventRepository, IRepository<EventJob> eventJobRepository, IRepository<Address> addressRepository, IUnitOfWork unitOfWork, IMediator mediator) : ControllerBase
+    public class EventController(IEventRepository eventRepository, IRepository<EventJob> eventJobRepository, IRepository<Address> addressRepository, IUnitOfWork unitOfWork, IMediator mediator) : ControllerBase
     {
         [HttpGet]
         [Route("{eventId}")]
