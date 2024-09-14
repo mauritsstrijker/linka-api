@@ -1,4 +1,5 @@
 ﻿using Linka.Domain.Common;
+using Linka.Domain.Enums;
 
 namespace Linka.Domain.Entities
 {
@@ -10,5 +11,29 @@ namespace Linka.Domain.Entities
         public DateTime EndDateTime { get; set; }
         public Address Address { get; set; }
         public byte[]? ImageBytes { get; set; } 
+        public EventStatus Status { get; set; }
+
+        public static Event Create
+            (
+            string title,
+            string description,
+            DateTime startDateTime,
+            DateTime endDateTime,
+            Address address,
+            byte[]? imageBytes
+            )
+        {
+            return new Event
+            {
+                Id = Guid.NewGuid(),
+                Title = title,
+                Description = description,
+                StartDateTime = startDateTime,
+                EndDateTime = endDateTime,
+                Address = address,
+                Status = EventStatus.Open, 
+                ImageBytes = imageBytes
+            };
+        }
     }
 }
