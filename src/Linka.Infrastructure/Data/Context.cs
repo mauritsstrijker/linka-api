@@ -18,6 +18,7 @@ public class Context : DbContext, IContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
+
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

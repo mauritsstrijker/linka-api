@@ -13,6 +13,7 @@ namespace Linka.Domain.Entities
         public byte[]? ImageBytes { get; set; }
         public EventStatus Status { get; set; }
         public Organization Organization { get; set; }
+        public List<EventJob> Jobs { get; set; }
 
         public static Event Create
             (
