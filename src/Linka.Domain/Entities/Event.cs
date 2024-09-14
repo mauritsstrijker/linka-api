@@ -10,11 +10,13 @@ namespace Linka.Domain.Entities
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
         public Address Address { get; set; }
-        public byte[]? ImageBytes { get; set; } 
+        public byte[]? ImageBytes { get; set; }
         public EventStatus Status { get; set; }
+        public Organization Organization { get; set; }
 
         public static Event Create
             (
+            Organization organization,
             string title,
             string description,
             DateTime startDateTime,
@@ -26,6 +28,7 @@ namespace Linka.Domain.Entities
             return new Event
             {
                 Id = Guid.NewGuid(),
+                Organization = organization,
                 Title = title,
                 Description = description,
                 StartDateTime = startDateTime,

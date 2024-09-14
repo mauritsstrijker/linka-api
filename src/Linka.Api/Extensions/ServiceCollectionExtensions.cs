@@ -13,6 +13,7 @@ namespace Linka.Api.Extensions
 
         public static IServiceCollection SetupServices(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
 
             return services;
         }

@@ -35,7 +35,7 @@ namespace Linka.Api.Controllers
             return events.Select(e => EventMapper.MapToEventDto(e));
         }
 
-        [Authorize]
+        [Authorize(Policy = "Organization")]
         [HttpPost]
         public async Task<CreateEventResponse> Create
             (

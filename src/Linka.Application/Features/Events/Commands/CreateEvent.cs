@@ -5,6 +5,7 @@ using Linka.Application.Dtos;
 using Linka.Application.Helpers;
 using Linka.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Threading;
 
@@ -28,7 +29,9 @@ namespace Linka.Application.Features.Events.Commands
         IRepository<Address> addressRepository,
         IRepository<Event> eventRepository,
         IRepository<EventJob> eventJobRepository,
-        IUnitOfWork unitOfWork
+        IRepository<Organization> organizationRepository,
+        IUnitOfWork unitOfWork,
+        IJwtClaimService jwtClaimService
         )
         : IRequestHandler<CreateEventRequest, CreateEventResponse>
     {
@@ -67,7 +70,10 @@ namespace Linka.Application.Features.Events.Commands
         {
             var eventImage = request.ImageBase64 is null ? null : Convert.FromBase64String(request.ImageBase64);
 
-            var @event = Event.Create(request.Title, request.Description, request.StartDateTime, request.EndDateTime, address, eventImage);
+            var currentOrganizationid = jwtClaimService.GetClaimValue("id");
+            var organization = await organizationRepository.Get(Guid.Parse(currentOrganizationid), cancellationToken) ?? throw new Exception();
+
+            var @event = Event.Create(organization, request.Title, request.Description, request.StartDateTime, request.EndDateTime, address, eventImage);
 
             await eventRepository.Insert(@event, cancellationToken);
 
