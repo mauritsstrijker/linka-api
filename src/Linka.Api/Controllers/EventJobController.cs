@@ -1,5 +1,7 @@
 ﻿using Linka.Application.Common;
+using Linka.Application.Features.EventJobs;
 using Linka.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Linka.Api.Controllers
@@ -7,7 +9,7 @@ namespace Linka.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EventJobController(IRepository<EventJob> eventJobRepository) : ControllerBase
+    public class EventJobController(IRepository<EventJob> eventJobRepository, IMediator mediator) : ControllerBase
     {
         [HttpGet]
         [Route("{eventJobId}")]
@@ -25,11 +27,13 @@ namespace Linka.Api.Controllers
         }
         [HttpGet]
         [Route("event/{eventId}")]
-        public async Task<IEnumerable<EventJob>> GetByEventId(Guid eventId)
+        public async Task<IEnumerable<GetEventJobsByEventIdResponse>> GetEventJobsByEventId
+            (
+            [FromRoute] Guid eventId,
+            CancellationToken cancellationToken
+            )
         {
-            var eventJobs = await eventJobRepository.GetAll(CancellationToken.None);
-
-            return eventJobs.Where(e => e.Event.Id == eventId).ToList();   
+            return await mediator.Send(new GetEventJobsByEventIdRequest(eventId), cancellationToken);
         }
     }
 

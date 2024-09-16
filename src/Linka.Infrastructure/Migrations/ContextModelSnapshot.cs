@@ -267,7 +267,7 @@ namespace Linka.Infrastructure.Migrations
                     b.HasOne("Linka.Domain.Entities.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Linka.Domain.Entities.Organization", "Organization")
@@ -297,7 +297,7 @@ namespace Linka.Infrastructure.Migrations
                     b.HasOne("Linka.Domain.Entities.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Linka.Domain.Entities.User", "User")
@@ -316,7 +316,7 @@ namespace Linka.Infrastructure.Migrations
                     b.HasOne("Linka.Domain.Entities.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Linka.Domain.Entities.User", "User")

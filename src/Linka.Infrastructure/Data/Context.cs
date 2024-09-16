@@ -17,8 +17,37 @@ public class Context : DbContext, IContext
     public DbSet<Organization> Organizations { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Event>()
+             .HasOne(e => e.Organization)
+             .WithMany(x => x.Events);
+
+        modelBuilder.Entity<Event>()
+            .HasMany(e => e.Jobs)
+            .WithOne(x => x.Event);
+
+        modelBuilder.Entity<Event>()
+            .HasOne(x => x.Address)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Organization>()
+            .HasOne(x => x.Address)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Volunteer>()
+           .HasOne(x => x.Address)
+           .WithMany()
+           .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Organization>()
+           .HasOne(x => x.User)
+           .WithMany();
 
 
+        modelBuilder.Entity<Volunteer>()
+           .HasOne(x => x.User)
+           .WithMany();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

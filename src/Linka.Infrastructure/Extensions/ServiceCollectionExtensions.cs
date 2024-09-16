@@ -17,6 +17,7 @@ internal static class ServiceCollectionExtensions
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<IEventJobRepository, EventJobRepository>();
     }
 
     internal static void SetupServices(this IServiceCollection services)

@@ -37,7 +37,7 @@ namespace Linka.Application.Features.Events.Commands
     {
         public async Task<CreateEventResponse> Handle(CreateEventRequest request, CancellationToken cancellationToken)
         {
-            var address = await CreateOrGetAddress(request, cancellationToken);
+            var address = await CreateAddress(request, cancellationToken);
 
             var @event = await CreateEvent(request, address, cancellationToken);
 
@@ -48,20 +48,23 @@ namespace Linka.Application.Features.Events.Commands
             return new CreateEventResponse();
         }
 
-        public async Task<Address> CreateOrGetAddress(CreateEventRequest request, CancellationToken cancellationToken)
+        public async Task<Address> CreateAddress(CreateEventRequest request, CancellationToken cancellationToken)
         {
             Address address;
 
             if (request.Address.Id is Guid addressId)
             {
                 address = await addressRepository.Get(addressId, cancellationToken);
+
+                address = Address.Create(address.Cep, address.City, address.Street, address.Number, address.Neighborhood, address.State, address.Nickname);
             }
             else
             {
                 address = Address.Create(request.Address.Cep, request.Address.City, request.Address.Street, request.Address.Number ?? default, request.Address.Neighborhood, request.Address.State, request.Address.Nickname);
               
-                await addressRepository.Insert(address, cancellationToken);
             }
+
+            await addressRepository.Insert(address, cancellationToken);
 
             return address;
         }

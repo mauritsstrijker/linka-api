@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Linka.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240914184551_Propriedades")]
-    partial class Propriedades
+    [Migration("20240916121711_Remover-NoAction")]
+    partial class RemoverNoAction
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -270,7 +270,7 @@ namespace Linka.Infrastructure.Migrations
                     b.HasOne("Linka.Domain.Entities.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Linka.Domain.Entities.Organization", "Organization")
@@ -300,7 +300,7 @@ namespace Linka.Infrastructure.Migrations
                     b.HasOne("Linka.Domain.Entities.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Linka.Domain.Entities.User", "User")
@@ -319,7 +319,7 @@ namespace Linka.Infrastructure.Migrations
                     b.HasOne("Linka.Domain.Entities.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Linka.Domain.Entities.User", "User")

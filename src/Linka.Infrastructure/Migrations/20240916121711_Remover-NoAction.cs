@@ -5,7 +5,7 @@
 namespace Linka.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Propriedades : Migration
+    public partial class RemoverNoAction : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,24 +15,12 @@ namespace Linka.Infrastructure.Migrations
                 table: "EventJobs");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Events_Addresses_AddressId",
-                table: "Events");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_Events_Organizations_OrganizationId",
                 table: "Events");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Organizations_Addresses_AddressId",
-                table: "Organizations");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_Organizations_Users_UserId",
                 table: "Organizations");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Volunteers_Addresses_AddressId",
-                table: "Volunteers");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Volunteers_Users_UserId",
@@ -47,14 +35,6 @@ namespace Linka.Infrastructure.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Events_Addresses_AddressId",
-                table: "Events",
-                column: "AddressId",
-                principalTable: "Addresses",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_Events_Organizations_OrganizationId",
                 table: "Events",
                 column: "OrganizationId",
@@ -63,26 +43,10 @@ namespace Linka.Infrastructure.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Organizations_Addresses_AddressId",
-                table: "Organizations",
-                column: "AddressId",
-                principalTable: "Addresses",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_Organizations_Users_UserId",
                 table: "Organizations",
                 column: "UserId",
                 principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Volunteers_Addresses_AddressId",
-                table: "Volunteers",
-                column: "AddressId",
-                principalTable: "Addresses",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
@@ -103,24 +67,12 @@ namespace Linka.Infrastructure.Migrations
                 table: "EventJobs");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Events_Addresses_AddressId",
-                table: "Events");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_Events_Organizations_OrganizationId",
                 table: "Events");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Organizations_Addresses_AddressId",
-                table: "Organizations");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_Organizations_Users_UserId",
                 table: "Organizations");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Volunteers_Addresses_AddressId",
-                table: "Volunteers");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Volunteers_Users_UserId",
@@ -131,56 +83,28 @@ namespace Linka.Infrastructure.Migrations
                 table: "EventJobs",
                 column: "EventId",
                 principalTable: "Events",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Events_Addresses_AddressId",
-                table: "Events",
-                column: "AddressId",
-                principalTable: "Addresses",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Events_Organizations_OrganizationId",
                 table: "Events",
                 column: "OrganizationId",
                 principalTable: "Organizations",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Organizations_Addresses_AddressId",
-                table: "Organizations",
-                column: "AddressId",
-                principalTable: "Addresses",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Organizations_Users_UserId",
                 table: "Organizations",
                 column: "UserId",
                 principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Volunteers_Addresses_AddressId",
-                table: "Volunteers",
-                column: "AddressId",
-                principalTable: "Addresses",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Volunteers_Users_UserId",
                 table: "Volunteers",
                 column: "UserId",
                 principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                principalColumn: "Id");
         }
     }
 }
