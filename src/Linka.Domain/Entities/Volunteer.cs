@@ -18,6 +18,7 @@ namespace Linka.Domain.Entities
         public int AllTimePoints { get; set; }
         public byte[]? ProfilePictureBytes { get; set; }
         public string? ProfilePictureExtension { get; set; }
+        public List<EventJob> Jobs { get; set; }
 
         public static Volunteer Create
             (

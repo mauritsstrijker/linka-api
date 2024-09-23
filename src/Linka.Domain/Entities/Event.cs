@@ -39,5 +39,21 @@ namespace Linka.Domain.Entities
                 ImageBytes = imageBytes
             };
         }
+
+        public void Update
+            (
+            string title,
+            string description,
+            DateTime startDateTime,
+            DateTime endDateTime,
+            byte[]? imageBytes
+            )
+        {
+            this.Title = title;
+            this.Description = description;
+            this.StartDateTime = startDateTime;
+            this.EndDateTime = endDateTime;
+            this.ImageBytes = imageBytes;
+        }
     }
 }

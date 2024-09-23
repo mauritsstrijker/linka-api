@@ -6,5 +6,6 @@ namespace Linka.Application.Repositories
     public interface IEventRepository : IRepository<Event>
     {
         Task<Event> Get(Guid id, CancellationToken cancellationToken);
+        Task<List<Event>> GetByOrganizationId(Guid organizationId, CancellationToken cancellationToken);
     }
 }

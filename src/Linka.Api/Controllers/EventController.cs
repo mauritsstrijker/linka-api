@@ -1,6 +1,7 @@
 using Linka.Application.Common;
 using Linka.Application.Data;
 using Linka.Application.Features.Events.Commands;
+using Linka.Application.Features.Events.Queries;
 using Linka.Application.Mappers;
 using Linka.Application.Repositories;
 using Linka.Domain.Entities;
@@ -44,6 +45,43 @@ namespace Linka.Api.Controllers
             )
         {
             return await mediator.Send(request, cancellationToken);
+        }
+
+        [Authorize(Policy = "Organization")]
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<UpdateEventResponse> Update
+           (
+           [FromBody] UpdateEventRequest request,
+           [FromRoute] Guid id,
+           CancellationToken cancellationToken
+           )
+        {
+            return await mediator.Send(request with { Id = id }, cancellationToken);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("{organizationId}")]
+        public async Task<List<GetAllEventByOrganizationIdResponse>> GetAllByOrganizationId
+           (
+           [FromRoute] Guid organizationId,
+           CancellationToken cancellationToken
+           )
+        {
+            return await mediator.Send(new GetAllEventByOrganizationIdRequest(organizationId), cancellationToken);
+        }
+
+        [Authorize(Policy = "Organization")]
+        [HttpPost]
+        [Route("{eventId}/cancel")]
+        public async Task<CancelEventResponse> Cancel
+            (
+            [FromRoute] Guid eventId,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new CancelEventRequest(eventId), cancellationToken);
         }
     }
 
