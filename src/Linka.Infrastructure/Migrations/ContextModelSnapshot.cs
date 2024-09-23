@@ -22,6 +22,21 @@ namespace Linka.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EventJobVolunteer", b =>
+                {
+                    b.Property<Guid>("JobsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("VolunteersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("JobsId", "VolunteersId");
+
+                    b.HasIndex("VolunteersId");
+
+                    b.ToTable("EventJobVolunteer");
+                });
+
             modelBuilder.Entity("Linka.Domain.Entities.Address", b =>
                 {
                     b.Property<Guid>("Id")
@@ -262,6 +277,21 @@ namespace Linka.Infrastructure.Migrations
                     b.ToTable("Volunteers");
                 });
 
+            modelBuilder.Entity("EventJobVolunteer", b =>
+                {
+                    b.HasOne("Linka.Domain.Entities.EventJob", null)
+                        .WithMany()
+                        .HasForeignKey("JobsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Linka.Domain.Entities.Volunteer", null)
+                        .WithMany()
+                        .HasForeignKey("VolunteersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Linka.Domain.Entities.Event", b =>
                 {
                     b.HasOne("Linka.Domain.Entities.Address", "Address")
@@ -303,7 +333,7 @@ namespace Linka.Infrastructure.Migrations
                     b.HasOne("Linka.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Address");
@@ -322,7 +352,7 @@ namespace Linka.Infrastructure.Migrations
                     b.HasOne("Linka.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Address");

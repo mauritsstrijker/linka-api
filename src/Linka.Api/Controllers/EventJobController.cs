@@ -1,5 +1,6 @@
 ﻿using Linka.Application.Common;
 using Linka.Application.Features.EventJobs;
+using Linka.Application.Features.EventJobs.Commands;
 using Linka.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,28 @@ namespace Linka.Api.Controllers
             )
         {
             return await mediator.Send(new GetEventJobsByEventIdRequest(eventId), cancellationToken);
+        }
+
+        [HttpPost]
+        [Route("{eventJobId}/subscribe")]
+        public async Task<SubscribeVolunteerToJobResponse> Subscribe
+            (
+            [FromRoute] Guid eventJobId,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new SubscribeVolunteerToJobRequest(eventJobId), cancellationToken);
+        }
+
+        [HttpPost]
+        [Route("{eventJobId}/unsubscribe")]
+        public async Task<UnsubscribeVolunteerToJobResponse> Unsubscribe
+            (
+            [FromRoute] Guid eventJobId,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new UnsubscribeVolunteerToJobRequest(eventJobId), cancellationToken);
         }
     }
 

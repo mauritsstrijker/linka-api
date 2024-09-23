@@ -135,7 +135,8 @@ namespace Linka.Infrastructure.Migrations
                         name: "FK_Events_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
                         principalTable: "Organizations",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,13 +157,43 @@ namespace Linka.Infrastructure.Migrations
                         name: "FK_EventJobs_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventJobVolunteer",
+                columns: table => new
+                {
+                    JobsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VolunteersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventJobVolunteer", x => new { x.JobsId, x.VolunteersId });
+                    table.ForeignKey(
+                        name: "FK_EventJobVolunteer_EventJobs_JobsId",
+                        column: x => x.JobsId,
+                        principalTable: "EventJobs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EventJobVolunteer_Volunteers_VolunteersId",
+                        column: x => x.VolunteersId,
+                        principalTable: "Volunteers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_EventJobs_EventId",
                 table: "EventJobs",
                 column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventJobVolunteer_VolunteersId",
+                table: "EventJobVolunteer",
+                column: "VolunteersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_AddressId",
@@ -198,6 +229,9 @@ namespace Linka.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "EventJobVolunteer");
+
             migrationBuilder.DropTable(
                 name: "EventJobs");
 

@@ -6,6 +6,13 @@ namespace Linka.Infrastructure.Data.Repositories
 {
     public class EventJobRepository(Context context) : Repository<EventJob>(context), IEventJobRepository
     {
+        public override Task<EventJob> Get(Guid id, CancellationToken cancellationToken)
+        {
+            return _context.EventJobs
+                .Include(x => x.Volunteers)
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        }
+
         public Task<List<EventJob>> GetAllJobsByEventId(Guid eventId, CancellationToken cancellationToken)
         {
             return _context.EventJobs

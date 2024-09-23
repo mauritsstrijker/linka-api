@@ -42,12 +42,20 @@ public class Context : DbContext, IContext
 
         modelBuilder.Entity<Organization>()
            .HasOne(x => x.User)
-           .WithMany();
+           .WithMany()
+           .OnDelete(DeleteBehavior.NoAction);
 
 
         modelBuilder.Entity<Volunteer>()
            .HasOne(x => x.User)
-           .WithMany();
+           .WithMany()
+           .OnDelete(DeleteBehavior.NoAction);
+
+        //
+        modelBuilder.Entity<EventJob>()
+            .HasMany(x => x.Volunteers)
+            .WithMany(x => x.Jobs);
+
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
