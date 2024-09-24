@@ -62,7 +62,7 @@ namespace Linka.Api.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("{organizationId}")]
+        [Route("organization/{organizationId}")]
         public async Task<List<GetAllEventByOrganizationIdResponse>> GetAllByOrganizationId
            (
            [FromRoute] Guid organizationId,
