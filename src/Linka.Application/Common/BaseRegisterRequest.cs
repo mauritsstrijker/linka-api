@@ -7,7 +7,7 @@ namespace Linka.Application.Common
           string Username,
           string Password,
           string Email,
-          CreateAddressDto Address,
+          AddressDto Address,
           string? ProfilePictureBase64
         );
 }
