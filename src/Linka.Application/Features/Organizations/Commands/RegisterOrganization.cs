@@ -19,7 +19,7 @@ namespace Linka.Application.Features.Organizations.Commands
          string Username,
          string Password,
          string Email,
-         AddressDto Address,
+         CreateAddressDto Address,
          string? ProfilePictureBase64
      )
      : BaseRegisterRequest(Username, Password, Email, Address, ProfilePictureBase64), IRequest<RegisterOrganizationResponse>;

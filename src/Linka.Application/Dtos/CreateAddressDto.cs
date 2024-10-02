@@ -1,6 +1,6 @@
 ﻿namespace Linka.Application.Dtos
 {
-    public sealed record AddressDto
+    public sealed record CreateAddressDto
         (
             string Cep,
             string City,

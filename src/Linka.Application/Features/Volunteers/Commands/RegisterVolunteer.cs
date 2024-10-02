@@ -18,7 +18,7 @@ namespace Linka.Application.Features.Volunteers.Commands
             string CPF,
             string Name,
             string Surname,
-            AddressDto Address,
+            CreateAddressDto Address,
             DateTime DathOfBirth,
             string? ProfilePictureBase64
         )
