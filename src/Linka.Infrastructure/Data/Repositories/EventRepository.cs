@@ -10,6 +10,7 @@ namespace Linka.Infrastructure.Data.Repositories
         {
             return _context.Events
                 .Include(x => x.Address)
+                .Include(x => x.Organization)
                 .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         }
 
