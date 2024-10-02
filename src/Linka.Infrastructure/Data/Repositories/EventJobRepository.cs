@@ -17,6 +17,7 @@ namespace Linka.Infrastructure.Data.Repositories
         {
             return _context.EventJobs
                 .Include(e => e.Event)
+                .Include(x => x.Volunteers)
                 .Where(e => e.Event.Id.Equals(eventId))
                 .ToListAsync(cancellationToken);
         }

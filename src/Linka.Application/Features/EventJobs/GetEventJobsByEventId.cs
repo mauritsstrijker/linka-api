@@ -13,7 +13,8 @@ namespace Linka.Application.Features.EventJobs
         string Title,
         string Description,
         int MaxVolunteers,
-        Guid EventId
+        Guid EventId,
+        int VolunteersCount
         );
 
     public class GetEventJobsByEventIdHandler
@@ -30,7 +31,8 @@ namespace Linka.Application.Features.EventJobs
                 job.Title,
                 job.Description,
                 job.MaxVolunteers,
-                job.Event.Id
+                job.Event.Id,
+                job.Volunteers.Count
             )).ToList();
 
             return response;
