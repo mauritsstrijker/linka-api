@@ -6,6 +6,12 @@ namespace Linka.Infrastructure.Data.Repositories
 {
     public class OrganizationRepository(Context context) : Repository<Organization>(context), IOrganizationRepository
     {
+        public override Task<Organization> Get(Guid id, CancellationToken cancellationToken)
+        {
+            return _context.Organizations
+                .Include(x => x.Address)
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        }
         public Task<Organization> GetByCNPJ(string cnpj, CancellationToken cancellationToken)
         {
             return _context.Organizations.FirstOrDefaultAsync(o => o.CNPJ == cnpj, cancellationToken);
