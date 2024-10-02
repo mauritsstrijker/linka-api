@@ -41,7 +41,7 @@ namespace Linka.Application.Features.Organizations.Queries
             Phone: organization.Phone,
             Address: new AddressDto
             (
-                Id: organization.Id,
+                Id: organization.Address.Id,
                 Cep: organization.Address.Cep,
                 City: organization.Address.City,
                 Street: organization.Address.Street,
