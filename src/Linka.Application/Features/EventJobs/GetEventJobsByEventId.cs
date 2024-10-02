@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Linka.Application.Common;
+using Linka.Application.Dtos;
 using Linka.Application.Repositories;
 using Linka.Domain.Entities;
 using MediatR;
@@ -14,7 +15,8 @@ namespace Linka.Application.Features.EventJobs
         string Description,
         int MaxVolunteers,
         Guid EventId,
-        int VolunteersCount
+        int VolunteersCount,
+        List<VolunteerDto> VolunteersSubscribed
         );
 
     public class GetEventJobsByEventIdHandler
@@ -32,7 +34,16 @@ namespace Linka.Application.Features.EventJobs
                 job.Description,
                 job.MaxVolunteers,
                 job.Event.Id,
-                job.Volunteers.Count
+                job.Volunteers.Count,
+                job.Volunteers.Select(v => new VolunteerDto(
+                    v.Id,
+                    v.CPF,
+                    v.FullName,
+                    v.ProfilePictureBytes != null
+                        ? Convert.ToBase64String(v.ProfilePictureBytes)
+                        : null 
+                )).ToList()
+
             )).ToList();
 
             return response;
