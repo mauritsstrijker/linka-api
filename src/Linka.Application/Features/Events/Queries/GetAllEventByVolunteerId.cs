@@ -35,7 +35,7 @@ namespace Linka.Application.Features.Events.Queries
         {
             var currentVolunteerId = jwtClaimService.GetClaimValue("id");
 
-            var events = await eventRepository.GetByVolunteerId(currentVolunteerId, cancellationToken);
+            var events = await eventRepository.GetByVolunteerId(Guid.Parse(currentVolunteerId), cancellationToken);
 
             var response = events.Select(e => new GetAllEventByVolunteerIdResponse(
              e.Id,
