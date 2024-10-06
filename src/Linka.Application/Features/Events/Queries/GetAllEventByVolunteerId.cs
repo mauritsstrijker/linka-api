@@ -57,7 +57,6 @@ namespace Linka.Application.Features.Events.Queries
     {
         public GetAllEventByVolunteerIdValidator()
         {
-            RuleFor(x => x.VolunteerId).NotEmpty();
         }
     }
 }
