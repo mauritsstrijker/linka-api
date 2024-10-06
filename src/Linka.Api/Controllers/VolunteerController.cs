@@ -36,7 +36,7 @@ namespace Linka.Api.Controllers
         }
 
         [Authorize]
-        [HttpGet("/events")]
+        [HttpGet("events")]
         public async Task<List<GetAllEventByVolunteerIdResponse>> GetEventsByVolunteerId
             (
             CancellationToken cancellationToken
