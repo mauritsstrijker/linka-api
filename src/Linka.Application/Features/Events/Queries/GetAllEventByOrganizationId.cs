@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Linka.Application.Repositories;
 using Linka.Domain.Entities;
+using Linka.Domain.Enums;
 using MediatR;
 
 namespace Linka.Application.Features.Events.Queries
@@ -18,6 +19,7 @@ namespace Linka.Application.Features.Events.Queries
         DateTime StartDateTime,
         DateTime EndDateTime,
         Address Address,
+        EventStatus Status,
         string? ImageBase64
         );
 
@@ -38,6 +40,7 @@ namespace Linka.Application.Features.Events.Queries
              e.StartDateTime,
              e.EndDateTime,
              e.Address,
+             e.Status,
              e.ImageBytes != null ? Convert.ToBase64String(e.ImageBytes) : null
          )).ToList();
 
