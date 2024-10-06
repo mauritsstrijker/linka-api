@@ -13,6 +13,8 @@ namespace Linka.Application.Features.Organizations.Queries
 
     public sealed record GetOrganizationByIdResponse
         (
+            string Email,
+            string Username,
             string CompanyName,
             string TradingName,
             string Phone,
@@ -36,6 +38,8 @@ namespace Linka.Application.Features.Organizations.Queries
         {
             return new GetOrganizationByIdResponse
         (
+            Email: organization.User.Email,
+            Username: organization.User.Username,
             CompanyName: organization.CompanyName,
             TradingName: organization.TradingName,
             Phone: organization.Phone,

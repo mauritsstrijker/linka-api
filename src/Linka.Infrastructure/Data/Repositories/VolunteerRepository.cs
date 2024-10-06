@@ -6,6 +6,12 @@ namespace Linka.Infrastructure.Data.Repositories
 {
     public class VolunteerRepository(Context context) : Repository<Volunteer>(context), IVolunteerRepository
     {
+        public override Task<Volunteer> Get(Guid id, CancellationToken cancellationToken)
+        {
+            return _context.Volunteers
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        }
         public Task<Volunteer> GetByCPF(string cpf, CancellationToken cancellationToken)
         {
             return _context.Volunteers.FirstOrDefaultAsync(v => v.CPF == cpf, cancellationToken);

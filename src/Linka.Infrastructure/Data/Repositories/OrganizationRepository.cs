@@ -10,6 +10,7 @@ namespace Linka.Infrastructure.Data.Repositories
         {
             return _context.Organizations
                 .Include(x => x.Address)
+                .Include(x => x.User)
                 .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         }
         public Task<Organization> GetByCNPJ(string cnpj, CancellationToken cancellationToken)

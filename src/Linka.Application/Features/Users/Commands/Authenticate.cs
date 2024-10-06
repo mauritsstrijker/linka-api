@@ -19,7 +19,7 @@ namespace Linka.Application.Features.Users.Commands
         private readonly string FailedAuthenticationMessage = "Verifique seus dados.";
         public async Task<AuthenticateResponse> Handle(AuthenticateRequest request, CancellationToken cancellationToken)
         {
-            var user = await userRepository.GetByUsername(request.Username, cancellationToken) ?? throw new Exception(FailedAuthenticationMessage);
+            var user = await userRepository.GetByUsername(request.Username, cancellationToken) ?? throw new ArgumentException(FailedAuthenticationMessage);
 
             if (PasswordHelper.VerifyPassword(request.Password, user.Password))
             {
@@ -29,7 +29,7 @@ namespace Linka.Application.Features.Users.Commands
             }
             else
             {
-                throw new Exception(FailedAuthenticationMessage);
+                throw new ArgumentException(FailedAuthenticationMessage);
             }
         }
     }
