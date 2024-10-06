@@ -17,7 +17,7 @@ namespace Linka.Application.Features.Events.Commands
             string Description,
             DateTime StartDateTime,
             DateTime EndDateTime,
-            CreateEventAddressDto Address,
+            CreateAddressDto Address,
             List<CreateEventJobDto> EventJobs,
             string? ImageBase64
         ) : IRequest<CreateEventResponse>;
@@ -52,17 +52,7 @@ namespace Linka.Application.Features.Events.Commands
         {
             Address address;
 
-            if (request.Address.Id is Guid addressId)
-            {
-                address = await addressRepository.Get(addressId, cancellationToken);
-
-                address = Address.Create(address.Cep, address.City, address.Street, address.Number, address.Neighborhood, address.State, address.Nickname);
-            }
-            else
-            {
-                address = Address.Create(request.Address.Cep, request.Address.City, request.Address.Street, request.Address.Number ?? default, request.Address.Neighborhood, request.Address.State, request.Address.Nickname);
-              
-            }
+            address = Address.Create(request.Address.Cep, request.Address.City, request.Address.Street, request.Address.Number, request.Address.Neighborhood, request.Address.State, request.Address.Nickname);
 
             await addressRepository.Insert(address, cancellationToken);
 
