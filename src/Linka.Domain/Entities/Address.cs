@@ -32,7 +32,7 @@ public class Address : BaseEntity
             Number = number,
             Neighborhood = neighborhood.Trim(),
             State = state.Trim(),
-            Nickname = nickname.Trim()
+            Nickname = nickname ?? null
         };
     }
 }
