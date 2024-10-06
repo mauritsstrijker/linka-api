@@ -15,6 +15,7 @@ public class Context : DbContext, IContext
     public DbSet<User> Users { get; set; }
     public DbSet<Volunteer> Volunteers { get; set; }
     public DbSet<Organization> Organizations { get; set; }
+    public DbSet<JobVolunteerActivity> JobVolunterActivities { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Event>()

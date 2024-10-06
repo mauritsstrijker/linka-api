@@ -83,6 +83,30 @@ namespace Linka.Api.Controllers
         {
             return await mediator.Send(new CancelEventRequest(eventId), cancellationToken);
         }
+
+        [Authorize(Policy = "Volunteer")]
+        [HttpPost]
+        [Route("{eventId}/check-in")]
+        public async Task<VolunteerCheckInResponse> CheckIn
+            (
+            [FromRoute] Guid eventId,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new VolunteerCheckInRequest(eventId), cancellationToken);
+        }
+
+        [Authorize(Policy = "Volunteer")]
+        [HttpPost]
+        [Route("{eventId}/check-out")]
+        public async Task<VolunteerCheckOutResponse> CheckOut
+            (
+            [FromRoute] Guid eventId,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new VolunteerCheckOutRequest(eventId), cancellationToken);
+        }
     }
 
     public sealed record CreateEventAddress(Guid? Id, string? Nickname, string? Cep, string? Street, string? Neighborhood, string? State, string? City, int? Number);
