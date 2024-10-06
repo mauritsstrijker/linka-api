@@ -21,5 +21,15 @@ namespace Linka.Infrastructure.Data.Repositories
                 .Where(x => x.Organization.Id == organizationId)
                 .ToListAsync(cancellationToken);
         }
+
+        public Task<List<Event>> GetByVolunteerId(Guid volunteerId, CancellationToken cancellationToken)
+        {
+            return _context.Events
+                .Include(x => x.Address) 
+                .Include(x => x.Jobs) 
+                    .ThenInclude(job => job.Volunteers)
+                .Where(x => x.Jobs.Any(job => job.Volunteers.Any(v => v.Id == volunteerId)))
+                .ToListAsync(cancellationToken);
+        }
     }
 }

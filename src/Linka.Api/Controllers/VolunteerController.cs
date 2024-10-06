@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Linka.Application.Features.Events.Queries;
 using Linka.Application.Features.Volunteers.Commands;
 using Linka.Application.Features.Volunteers.Queries;
 using Linka.Domain.Entities;
@@ -32,6 +33,16 @@ namespace Linka.Api.Controllers
             )
         {
             return await mediator.Send(new GetVolunteerByIdRequest(id), cancellationToken);
+        }
+
+        [Authorize]
+        [HttpGet("/events")]
+        public async Task<List<GetAllEventByVolunteerIdResponse>> GetEventsByVolunteerId
+            (
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new GetAllEventByVolunteerIdRequest(), cancellationToken);
         }
     }
 }

@@ -7,5 +7,6 @@ namespace Linka.Application.Repositories
     {
         Task<Event> Get(Guid id, CancellationToken cancellationToken);
         Task<List<Event>> GetByOrganizationId(Guid organizationId, CancellationToken cancellationToken);
+        Task<List<Event>> GetByVolunteerId(Guid volunteerId, CancellationToken cancellationToken);
     }
 }

@@ -11,6 +11,7 @@ namespace Linka.Application.Features.EventJobs
 
     public sealed record GetEventJobsByEventIdResponse
         (
+        Guid Id,
         string Title,
         string Description,
         int MaxVolunteers,
@@ -30,6 +31,7 @@ namespace Linka.Application.Features.EventJobs
             var eventJobs = await eventJobRepository.GetAllJobsByEventId(request.EventId, cancellationToken);
 
             var response = eventJobs.Select(job => new GetEventJobsByEventIdResponse(
+                job.Id,
                 job.Title,
                 job.Description,
                 job.MaxVolunteers,
