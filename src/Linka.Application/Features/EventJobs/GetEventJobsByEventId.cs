@@ -17,12 +17,13 @@ namespace Linka.Application.Features.EventJobs
         int MaxVolunteers,
         Guid EventId,
         int VolunteersCount,
-        List<VolunteerDto> VolunteersSubscribed
+        List<SubscribedVolunteerDto> VolunteersSubscribed
         );
 
     public class GetEventJobsByEventIdHandler
         (
-        IEventJobRepository eventJobRepository
+        IEventJobRepository eventJobRepository,
+        IJobVolunteerActivityRepository jobVolunteerActivityRepository
         )
         : IRequestHandler<GetEventJobsByEventIdRequest, IEnumerable<GetEventJobsByEventIdResponse>>
     {
@@ -30,25 +31,34 @@ namespace Linka.Application.Features.EventJobs
         {
             var eventJobs = await eventJobRepository.GetAllJobsByEventId(request.EventId, cancellationToken);
 
-            var response = eventJobs.Select(job => new GetEventJobsByEventIdResponse(
-                job.Id,
-                job.Title,
-                job.Description,
-                job.MaxVolunteers,
-                job.Event.Id,
-                job.Volunteers.Count,
-                job.Volunteers.Select(v => new VolunteerDto(
-                    v.Id,
-                    v.CPF,
-                    v.FullName,
-                    v.ProfilePictureBytes != null
-                        ? Convert.ToBase64String(v.ProfilePictureBytes)
-                        : null 
-                )).ToList()
+            var response = await Task.WhenAll(eventJobs.Select(async job =>
+            {
+                var subscribedVolunteers = await Task.WhenAll(job.Volunteers.Select(async v =>
+                {
+                    var volunteerActivity = await jobVolunteerActivityRepository.GetByJobAndVolunteer(job.Id, v.Id, cancellationToken);
 
-            )).ToList();
+                    return new SubscribedVolunteerDto(
+                        v.Id,
+                        v.CPF,
+                        v.FullName,
+                        v.ProfilePictureBytes != null ? Convert.ToBase64String(v.ProfilePictureBytes) : null,
+                        volunteerActivity?.CheckIn, 
+                        volunteerActivity?.CheckOut
+                    );
+                }));
 
-            return response;
+                return new GetEventJobsByEventIdResponse(
+                    job.Id,
+                    job.Title,
+                    job.Description,
+                    job.MaxVolunteers,
+                    job.Event.Id,
+                    job.Volunteers.Count,
+                    subscribedVolunteers.ToList()
+                );
+            }));
+
+            return response.ToList();
         }
     }
 

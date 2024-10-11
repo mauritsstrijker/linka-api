@@ -86,26 +86,28 @@ namespace Linka.Api.Controllers
 
         [Authorize(Policy = "Volunteer")]
         [HttpPost]
-        [Route("{eventId}/check-in")]
+        [Route("{eventId}/check-in/{volunteerId}")]
         public async Task<VolunteerCheckInResponse> CheckIn
             (
             [FromRoute] Guid eventId,
+            [FromRoute] Guid volunteerId,
             CancellationToken cancellationToken
             )
         {
-            return await mediator.Send(new VolunteerCheckInRequest(eventId), cancellationToken);
+            return await mediator.Send(new VolunteerCheckInRequest(eventId, volunteerId), cancellationToken);
         }
 
         [Authorize(Policy = "Volunteer")]
         [HttpPost]
-        [Route("{eventId}/check-out")]
+        [Route("{eventId}/check-out/{volunteerId}")]
         public async Task<VolunteerCheckOutResponse> CheckOut
             (
             [FromRoute] Guid eventId,
+            [FromRoute] Guid volunteerId,
             CancellationToken cancellationToken
             )
         {
-            return await mediator.Send(new VolunteerCheckOutRequest(eventId), cancellationToken);
+            return await mediator.Send(new VolunteerCheckOutRequest(eventId, volunteerId), cancellationToken);
         }
     }
 

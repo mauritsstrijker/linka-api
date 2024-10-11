@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Linka.Application.Features.Events.Commands
 {
-    public record VolunteerCheckOutRequest(Guid EventId) : IRequest<VolunteerCheckOutResponse>;
+    public record VolunteerCheckOutRequest(Guid EventId, Guid VolunteerId) : IRequest<VolunteerCheckOutResponse>;
 
     public record VolunteerCheckOutResponse;
 
@@ -23,9 +23,7 @@ namespace Linka.Application.Features.Events.Commands
     {
         public async Task<VolunteerCheckOutResponse> Handle(VolunteerCheckOutRequest request, CancellationToken cancellationToken)
         {
-            var currentVolunteerId = Guid.Parse(jwtClaimService.GetClaimValue("id"));
-
-            var volunteer = await volunteerRepository.Get(currentVolunteerId, cancellationToken);
+            var volunteer = await volunteerRepository.Get(request.VolunteerId, cancellationToken);
 
             var eventJobs = await eventJobRepository.GetAllJobsByEventId(request.EventId, cancellationToken);
 

@@ -14,6 +14,14 @@ namespace Linka.Infrastructure.Data.Repositories
                 .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         }
 
+        public override Task<List<Event>> GetAll(CancellationToken cancellationToken)
+        {
+            return _context.Events
+                .Include(x => x.Address)
+                .Include(x => x.Organization)
+                .ToListAsync(cancellationToken);
+        }
+
         public Task<List<Event>> GetByOrganizationId(Guid organizationId, CancellationToken cancellationToken)
         {
             return _context.Events
