@@ -31,23 +31,27 @@ namespace Linka.Application.Features.EventJobs
         {
             var eventJobs = await eventJobRepository.GetAllJobsByEventId(request.EventId, cancellationToken);
 
-            var response = await Task.WhenAll(eventJobs.Select(async job =>
+            var response = new List<GetEventJobsByEventIdResponse>();
+
+            foreach (var job in eventJobs)
             {
-                var subscribedVolunteers = await Task.WhenAll(job.Volunteers.Select(async v =>
+                var subscribedVolunteers = new List<SubscribedVolunteerDto>();
+
+                foreach (var v in job.Volunteers)
                 {
                     var volunteerActivity = await jobVolunteerActivityRepository.GetByJobAndVolunteer(job.Id, v.Id, cancellationToken);
 
-                    return new SubscribedVolunteerDto(
+                    subscribedVolunteers.Add(new SubscribedVolunteerDto(
                         v.Id,
                         v.CPF,
                         v.FullName,
                         v.ProfilePictureBytes != null ? Convert.ToBase64String(v.ProfilePictureBytes) : null,
-                        volunteerActivity?.CheckIn, 
+                        volunteerActivity?.CheckIn,
                         volunteerActivity?.CheckOut
-                    );
-                }));
+                    ));
+                }
 
-                return new GetEventJobsByEventIdResponse(
+                response.Add(new GetEventJobsByEventIdResponse(
                     job.Id,
                     job.Title,
                     job.Description,
@@ -55,10 +59,10 @@ namespace Linka.Application.Features.EventJobs
                     job.Event.Id,
                     job.Volunteers.Count,
                     subscribedVolunteers.ToList()
-                );
-            }));
+                ));
+            }
 
-            return response.ToList();
+            return response;
         }
     }
 
