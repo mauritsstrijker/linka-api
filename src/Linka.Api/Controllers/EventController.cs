@@ -30,7 +30,7 @@ namespace Linka.Api.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IEnumerable<EventDTO>> GetAll ()
+        public async Task<IEnumerable<EventDTO>> GetAll()
         {
             var events = await eventRepository.GetAll(CancellationToken.None);
             return events.Select(e => EventMapper.MapToEventDto(e));
@@ -84,7 +84,7 @@ namespace Linka.Api.Controllers
             return await mediator.Send(new CancelEventRequest(eventId), cancellationToken);
         }
 
-        [Authorize(Policy = "Volunteer")]
+        [Authorize(Policy = "Organization")]
         [HttpPost]
         [Route("{eventId}/check-in/{volunteerId}")]
         public async Task<VolunteerCheckInResponse> CheckIn
@@ -97,7 +97,7 @@ namespace Linka.Api.Controllers
             return await mediator.Send(new VolunteerCheckInRequest(eventId, volunteerId), cancellationToken);
         }
 
-        [Authorize(Policy = "Volunteer")]
+        [Authorize(Policy = "Organization")]
         [HttpPost]
         [Route("{eventId}/check-out/{volunteerId}")]
         public async Task<VolunteerCheckOutResponse> CheckOut
