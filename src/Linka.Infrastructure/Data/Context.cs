@@ -16,6 +16,10 @@ public class Context : DbContext, IContext
     public DbSet<Volunteer> Volunteers { get; set; }
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<JobVolunteerActivity> JobVolunterActivities { get; set; }
+    public DbSet<Post> Posts { get; set; }
+    public DbSet<PostLike> PostLikes { get; set; }
+    public DbSet<PostComment> PostComments { get; set; }
+    public DbSet<PostShare> PostShares { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Event>()
@@ -56,7 +60,27 @@ public class Context : DbContext, IContext
         modelBuilder.Entity<EventJob>()
             .HasMany(x => x.Volunteers)
             .WithMany(x => x.Jobs);
+        //
 
+        modelBuilder.Entity<Post>()
+           .HasOne(x => x.Author)
+           .WithMany(u => u.Posts)
+           .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity <PostLike>()
+           .HasOne(x => x.User)
+           .WithMany(u => u.Likes)
+           .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<PostShare>()
+         .HasOne(x => x.User)
+         .WithMany(u => u.Shares)
+         .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<PostComment>()
+         .HasOne(x => x.Author)
+         .WithMany(u => u.Comments)
+         .OnDelete(DeleteBehavior.NoAction);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

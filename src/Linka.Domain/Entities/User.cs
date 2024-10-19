@@ -10,6 +10,10 @@ namespace Linka.Domain.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public UserType Type { get; set; }
+        public List<Post> Posts { get; set; }
+        public List<PostComment> Comments { get; set; }
+        public List<PostShare> Shares { get; set; }
+        public List<PostLike> Likes { get; set; }
         public static User Create
            (
            string username,
