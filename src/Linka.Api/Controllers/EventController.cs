@@ -84,6 +84,31 @@ namespace Linka.Api.Controllers
             return await mediator.Send(new CancelEventRequest(eventId), cancellationToken);
         }
 
+
+        [Authorize(Policy = "Organization")]
+        [HttpPost]
+        [Route("{eventId}/start")]
+        public async Task<StartEventResponse> Start
+            (
+            [FromRoute] Guid eventId,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new StartEventRequest(eventId), cancellationToken);
+        }
+
+        [Authorize(Policy = "Organization")]
+        [HttpPost]
+        [Route("{eventId}/end")]
+        public async Task<EndEventResponse> End
+         (
+         [FromRoute] Guid eventId,
+         CancellationToken cancellationToken
+         )
+        {
+            return await mediator.Send(new EndEventRequest(eventId), cancellationToken);
+        }
+
         [Authorize(Policy = "Organization")]
         [HttpPost]
         [Route("{eventId}/check-in/{volunteerId}")]
