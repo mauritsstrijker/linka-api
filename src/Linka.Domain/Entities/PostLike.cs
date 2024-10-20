@@ -9,5 +9,10 @@ namespace Linka.Domain.Entities
         public User User { get; set; }
 
         public Post Post { get; set; }
+
+        public static PostLike Create(User user,Post post)
+        {
+            return new PostLike { Id = Guid.NewGuid(), User = user, Post = post };   
+        }
     }
 }

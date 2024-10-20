@@ -1,6 +1,7 @@
 ﻿using Linka.Application.Repositories;
 using Linka.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace Linka.Infrastructure.Data.Repositories
 {
@@ -11,6 +12,10 @@ namespace Linka.Infrastructure.Data.Repositories
             return await _context.Posts
                 .Include(x => x.AssociatedOrganization)
                 .Include(x => x.Author)
+                .Include(x => x.Likes)
+                    .ThenInclude(x => x.User)
+                .Include(x => x.Shares)
+                    .ThenInclude(x => x.User)
                 .ToListAsync(cancellationToken);
         }
 
@@ -19,6 +24,10 @@ namespace Linka.Infrastructure.Data.Repositories
             return await _context.Posts
                 .Include(x => x.AssociatedOrganization)
                 .Include(x => x.Author)
+                .Include(x => x.Likes)
+                    .ThenInclude(x => x.User)
+                .Include(x => x.Shares)
+                    .ThenInclude(x => x.User)
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
         }

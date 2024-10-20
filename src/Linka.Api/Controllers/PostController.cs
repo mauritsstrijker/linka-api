@@ -44,5 +44,48 @@ namespace Linka.Api.Controllers
             return await mediator.Send(new DeletePostRequest { Id = id }, cancellationToken);
         }
 
+        [Authorize]
+        [HttpPost("{id}/like")]
+        public async Task<LikePostResponse> Like
+            (
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new LikePostRequest { Id = id }, cancellationToken); 
+        }
+
+        [Authorize]
+        [HttpPost("{id}/unlike")]
+        public async Task<UnlikePostResponse> Unlike
+            (
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new UnlikePostRequest { Id = id }, cancellationToken);
+        }
+
+        [Authorize]
+        [HttpPost("{id}/share")]
+        public async Task<SharePostResponse> Share
+            (
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new SharePostRequest { Id = id }, cancellationToken); 
+        }
+
+        [Authorize]
+        [HttpPost("{id}/unshare")]
+        public async Task<UnsharePostResponse> Unshare
+            (
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new UnsharePostRequest { Id = id }, cancellationToken);
+        }
     }
 }

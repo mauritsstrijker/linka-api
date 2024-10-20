@@ -6,6 +6,7 @@
         public Guid AuthorId { get; set; }
         public Guid AssociatedOrganizationId { get; set; }
         public string? ImageBase64 { get; set; }
-
+        public int ShareCount { get; set; }
+        public int LikeCount { get; set; }
     }
 }

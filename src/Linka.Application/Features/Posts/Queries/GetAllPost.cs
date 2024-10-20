@@ -25,7 +25,9 @@ namespace Linka.Application.Features.Posts.Queries
                 Description = x.Description,
                 AuthorId = x.Author.Id, 
                 AssociatedOrganizationId = x.AssociatedOrganization.Id, 
-                ImageBase64 = x.ImageBytes != null ? Convert.ToBase64String(x.ImageBytes) : null
+                ImageBase64 = x.ImageBytes != null ? Convert.ToBase64String(x.ImageBytes) : null,
+                ShareCount = x.Shares.Count,
+                LikeCount = x.Likes.Count
             }).ToList();
         }
     }
