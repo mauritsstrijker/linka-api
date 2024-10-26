@@ -21,7 +21,7 @@ namespace Linka.Application.Features.Posts.Commands
         public async Task<UnlikePostResponse> Handle(UnlikePostRequest request, CancellationToken cancellationToken)
         {
             var post = await postRepository.Get(request.Id, cancellationToken) ?? throw new Exception();
-            var currentUser = await userRepository.Get(Guid.Parse(jwtClaimService.GetClaimValue("id")), cancellationToken) ?? throw new Exception();
+            var currentUser = await userRepository.Get(Guid.Parse(jwtClaimService.GetClaimValue("userId")), cancellationToken) ?? throw new Exception();
 
             var userLike = post.Likes.FirstOrDefault(like => like.User.Id == currentUser.Id);
             if (userLike == null)

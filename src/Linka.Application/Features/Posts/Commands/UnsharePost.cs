@@ -15,7 +15,7 @@ namespace Linka.Application.Features.Posts.Commands
         public async Task<UnsharePostResponse> Handle(UnsharePostRequest request, CancellationToken cancellationToken)
         {
             var post = await postRepository.Get(request.Id, cancellationToken) ?? throw new Exception();
-            var currentUser = await userRepository.Get(Guid.Parse(jwtClaimService.GetClaimValue("id")), cancellationToken) ?? throw new Exception();
+            var currentUser = await userRepository.Get(Guid.Parse(jwtClaimService.GetClaimValue("userId")), cancellationToken) ?? throw new Exception();
 
             var userShare = post.Shares.FirstOrDefault(Share => Share.User.Id == currentUser.Id);
             if (userShare == null)

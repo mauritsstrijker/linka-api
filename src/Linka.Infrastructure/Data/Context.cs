@@ -20,6 +20,7 @@ public class Context : DbContext, IContext
     public DbSet<PostLike> PostLikes { get; set; }
     public DbSet<PostComment> PostComments { get; set; }
     public DbSet<PostShare> PostShares { get; set; }
+    public DbSet<Follow> Follows { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Event>()
