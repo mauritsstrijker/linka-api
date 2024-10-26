@@ -28,5 +28,12 @@ namespace Linka.Infrastructure.Data.Repositories
                 .Where(x => x.Post.Id == postId)
                 .ToListAsync(cancellationToken);
         }
+
+        public async Task<int> GetCountByPostId(Guid postId, CancellationToken cancellationToken)
+        {
+            return await _context.PostComments
+                  .Where(x => x.Post.Id == postId)
+                  .CountAsync(cancellationToken);
+        }
     }
 }

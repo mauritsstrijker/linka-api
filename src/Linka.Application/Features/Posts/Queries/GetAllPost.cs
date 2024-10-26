@@ -1,7 +1,9 @@
 ﻿using Linka.Application.Dtos;
 using Linka.Application.Repositories;
 using Linka.Domain.Entities;
+using Linka.Domain.Enums;
 using MediatR;
+using System.Threading;
 
 namespace Linka.Application.Features.Posts.Queries
 {
@@ -9,26 +11,54 @@ namespace Linka.Application.Features.Posts.Queries
     {
     }
 
-    public class GetAllPostHandler(IPostRepository postRepository) : IRequestHandler<GetAllPostRequest, ICollection<PostDto>>
+    public class GetAllPostHandler(IPostRepository postRepository, IPostCommentRepository postCommentRepository, IVolunteerRepository volunteerRepository, IOrganizationRepository organizationRepository) : IRequestHandler<GetAllPostRequest, ICollection<PostDto>>
     {
         public async Task<ICollection<PostDto>> Handle(GetAllPostRequest request, CancellationToken cancellationToken)
         {
             var posts = await postRepository.GetAll(cancellationToken);
 
-            return MapPostsToDto(posts);
+            return await MapPostsToDto(posts, cancellationToken);
         }
 
-        private ICollection<PostDto> MapPostsToDto(List<Post> posts)
+        private async Task<ICollection<PostDto>> MapPostsToDto(List<Post> posts, CancellationToken cancellationToken)
         {
-            return posts.Select(x => new PostDto
+            var postDtos = new List<PostDto>();
+
+            foreach (var post in posts)
             {
-                Description = x.Description,
-                AuthorId = x.Author.Id, 
-                AssociatedOrganizationId = x.AssociatedOrganization.Id, 
-                ImageBase64 = x.ImageBytes != null ? Convert.ToBase64String(x.ImageBytes) : null,
-                ShareCount = x.Shares.Count,
-                LikeCount = x.Likes.Count
-            }).ToList();
+                var commentCount = await postCommentRepository.GetCountByPostId(post.Id, cancellationToken);
+
+                Guid authorId;
+                string authorDisplayName;
+                if (post.Author.Type == UserType.Volunteer)
+                {
+                    var volunteer = await volunteerRepository.GetByUserId(post.Author.Id, cancellationToken);
+                    authorDisplayName = volunteer.FullName;
+                    authorId = volunteer.Id;
+                }
+                else
+                {
+                    var organization = await organizationRepository.GetByUserId(post.Author.Id, cancellationToken);
+                    authorDisplayName = organization.TradingName;
+                    authorId = organization.Id;
+                }
+
+                postDtos.Add(new PostDto
+                {
+                    Id = post.Id,
+                    Description = post.Description,
+                    AuthorId = authorId,
+                    AuthorDisplayName = authorDisplayName,
+                    AuthorType = post.Author.Type,
+                    AssociatedOrganizationId = post.AssociatedOrganization.Id,
+                    ImageBase64 = post.ImageBytes != null ? Convert.ToBase64String(post.ImageBytes) : null,
+                    ShareCount = post.Shares.Count,
+                    LikeCount = post.Likes.Count,
+                    CommentCount = commentCount
+                });
+            }
+
+            return postDtos;
         }
     }
 }
