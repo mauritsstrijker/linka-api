@@ -38,28 +38,28 @@ namespace Linka.Application.Features.Organizations.Queries
         public static GetOrganizationByIdResponse MapToDto(Organization organization)
         {
             return new GetOrganizationByIdResponse
-        (
-            UserId: organization.User.Id,
-            Email: organization.User.Email,
-            Username: organization.User.Username,
-            CompanyName: organization.CompanyName,
-            TradingName: organization.TradingName,
-            Phone: organization.Phone,
-            Address: new AddressDto
             (
-                Id: organization.Address.Id,
-                Cep: organization.Address.Cep,
-                City: organization.Address.City,
-                Street: organization.Address.Street,
-                Number: organization.Address.Number,
-                Neighborhood: organization.Address.Neighborhood,
-                State: organization.Address.State,
-                Nickname: organization.Address.Nickname
-            ),
-            ProfilePictureBase64: organization.ProfilePictureBytes != null
-                ? Convert.ToBase64String(organization.ProfilePictureBytes)
-                : null
-        );
+                UserId: organization.User.Id,
+                Email: organization.User.Email,
+                Username: organization.User.Username,
+                CompanyName: organization.CompanyName,
+                TradingName: organization.TradingName,
+                Phone: organization.Phone,
+                Address: new AddressDto
+                (
+                    Id: organization.Address.Id,
+                    Cep: organization.Address.Cep,
+                    City: organization.Address.City,
+                    Street: organization.Address.Street,
+                    Number: organization.Address.Number,
+                    Neighborhood: organization.Address.Neighborhood,
+                    State: organization.Address.State,
+                    Nickname: organization.Address.Nickname
+                ),
+                ProfilePictureBase64: organization.ProfilePictureBytes != null
+                    ? Convert.ToBase64String(organization.ProfilePictureBytes)
+                    : null
+            );
         }
     }
     public class GetOrganizationByIdValidator : AbstractValidator<GetOrganizationByIdRequest>
