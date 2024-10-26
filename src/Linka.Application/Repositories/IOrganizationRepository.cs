@@ -7,5 +7,6 @@ namespace Linka.Application.Repositories
     {
         Task<Organization> GetByCNPJ(string cnpj, CancellationToken cancellationToken);
         Task<Organization> GetByUserId(Guid userId, CancellationToken cancellationToken);
+        Task<List<Organization>> GetAllFollowing(Guid volunteerId, CancellationToken cancellationToken);
     }
 }

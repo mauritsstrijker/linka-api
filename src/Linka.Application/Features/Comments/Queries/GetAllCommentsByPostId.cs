@@ -41,6 +41,7 @@ namespace Linka.Application.Features.Comments.Queries
                 }
                 response.Add(new CommentDto
                 {
+                    Id = comment.Id,
                     Content = comment.Content,
                     AuthorId = authorId,
                     Type = comment.Author.Type,

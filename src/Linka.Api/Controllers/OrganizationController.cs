@@ -31,5 +31,27 @@ namespace Linka.Api.Controllers
         {
             return await mediator.Send(new GetOrganizationByIdRequest(Id), cancellationToken);
         }
+
+        [Authorize]
+        [HttpPost("{id}/follow")]
+        public async Task<FollowOrganizationResponse> Follow
+        (
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+        )
+        {
+            return await mediator.Send(new FollowOrganizationRequest { OrganizationId = id }, cancellationToken);
+        }
+
+        [Authorize]
+        [HttpPost("{id}/unfollow")]
+        public async Task<UnfollowOrganizationResponse> Unfollow
+        (
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+        )
+        {
+            return await mediator.Send(new UnfollowOrganizationRequest { OrganizationId = id }, cancellationToken);
+        }
     }
 }

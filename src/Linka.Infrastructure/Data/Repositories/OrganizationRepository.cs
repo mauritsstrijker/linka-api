@@ -13,6 +13,15 @@ namespace Linka.Infrastructure.Data.Repositories
                 .Include(x => x.User)
                 .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         }
+
+        public async Task<List<Organization>> GetAllFollowing(Guid volunteerId, CancellationToken cancellationToken)
+        {
+            return await _context.Follows
+            .Where(f => f.Volunteer.Id == volunteerId)
+            .Select(f => f.Organization)
+            .ToListAsync();
+        }
+
         public Task<Organization> GetByCNPJ(string cnpj, CancellationToken cancellationToken)
         {
             return _context.Organizations.FirstOrDefaultAsync(o => o.CNPJ == cnpj, cancellationToken);
