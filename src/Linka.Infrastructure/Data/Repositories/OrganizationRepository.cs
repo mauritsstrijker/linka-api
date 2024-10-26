@@ -18,9 +18,9 @@ namespace Linka.Infrastructure.Data.Repositories
         {
             return await _context.Follows
             .Where(f => f.Volunteer.Id == volunteerId)
+            .Include(f => f.Organization.User)
+            .Include(f => f.Organization.Address)
             .Select(f => f.Organization)
-            .Include(x => x.User)
-            .Include(x => x.Address)
             .ToListAsync();
         }
 
