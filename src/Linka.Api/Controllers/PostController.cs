@@ -87,5 +87,16 @@ namespace Linka.Api.Controllers
         {
             return await mediator.Send(new UnsharePostRequest { Id = id }, cancellationToken);
         }
+
+        [Authorize]
+        [HttpGet("user/{userId}")]
+        public async Task<ICollection<PostDto>> GetAll
+            (
+            [FromRoute] Guid userId,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new GetAllPostsByUserIdRequest { UserId = userId }, cancellationToken);
+        }
     }
 }

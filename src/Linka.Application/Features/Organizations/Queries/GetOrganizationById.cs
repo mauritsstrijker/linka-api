@@ -13,6 +13,7 @@ namespace Linka.Application.Features.Organizations.Queries
 
     public sealed record GetOrganizationByIdResponse
         (
+            Guid UserId,
             string Email,
             string Username,
             string CompanyName,
@@ -38,6 +39,7 @@ namespace Linka.Application.Features.Organizations.Queries
         {
             return new GetOrganizationByIdResponse
         (
+            UserId: organization.User.Id,
             Email: organization.User.Email,
             Username: organization.User.Username,
             CompanyName: organization.CompanyName,

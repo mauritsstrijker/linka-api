@@ -6,7 +6,7 @@ namespace Linka.Application.Features.Volunteers.Queries
 {
     public sealed record GetVolunteerByIdRequest(Guid VolunteerId) : IRequest<GetVolunteerByIdResponse>;
     
-    public sealed record GetVolunteerByIdResponse(string Name, string Surname, string FullName, string Username, string? ProfilePictureBase64, string? ProfilePictureExtension, string Email);
+    public sealed record GetVolunteerByIdResponse(Guid UserId, string Name, string Surname, string FullName, string Username, string? ProfilePictureBase64, string? ProfilePictureExtension, string Email);
 
     public sealed class GetVolunteerByIdHandler
         (
@@ -18,6 +18,7 @@ namespace Linka.Application.Features.Volunteers.Queries
             var volunteer = await volunteerRepository.Get(request.VolunteerId, cancellationToken) ?? throw new Exception();
 
             return new GetVolunteerByIdResponse(
+                volunteer.User.Id,
                 volunteer.Name,
                 volunteer.Surname,
                 volunteer.FullName,

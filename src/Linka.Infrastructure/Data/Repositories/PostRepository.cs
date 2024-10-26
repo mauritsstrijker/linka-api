@@ -31,5 +31,18 @@ namespace Linka.Infrastructure.Data.Repositories
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
         }
+
+        public async Task<List<Post>> GetAllByUserId(Guid userId, CancellationToken cancellationToken)
+        {
+            return await _context.Posts
+              .Include(x => x.AssociatedOrganization)
+              .Include(x => x.Author)
+              .Include(x => x.Likes)
+                  .ThenInclude(x => x.User)
+              .Include(x => x.Shares)
+                  .ThenInclude(x => x.User)
+              .Where(x => x.Author.Id == userId)
+              .ToListAsync(cancellationToken);
+        }
     }
 }
