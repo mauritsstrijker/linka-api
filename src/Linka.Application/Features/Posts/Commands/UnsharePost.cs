@@ -1,6 +1,7 @@
 ﻿using Linka.Application.Common;
 using Linka.Application.Data;
 using Linka.Application.Repositories;
+using Linka.Domain.Entities;
 using MediatR;
 
 namespace Linka.Application.Features.Posts.Commands
@@ -10,7 +11,7 @@ namespace Linka.Application.Features.Posts.Commands
         public Guid Id { get; set; }
     }
     public class UnsharePostResponse;
-    public class UnsharePostHandler(IPostRepository postRepository, IUserRepository userRepository, IJwtClaimService jwtClaimService, IUnitOfWork unitOfWork) : IRequestHandler<UnsharePostRequest, UnsharePostResponse>
+    public class UnsharePostHandler(IPostRepository postRepository, IUserRepository userRepository, IJwtClaimService jwtClaimService, IUnitOfWork unitOfWork, IRepository<PostShare> shareRepository) : IRequestHandler<UnsharePostRequest, UnsharePostResponse>
     {
         public async Task<UnsharePostResponse> Handle(UnsharePostRequest request, CancellationToken cancellationToken)
         {

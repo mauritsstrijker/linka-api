@@ -16,7 +16,7 @@ namespace Linka.Application.Features.Posts.Commands
         public Guid Id { get; set; }
     }
     public class SharePostResponse;
-    public class SharePostHandler(IPostRepository postRepository, IUserRepository userRepository, IJwtClaimService jwtClaimService, IUnitOfWork unitOfWork) : IRequestHandler<SharePostRequest, SharePostResponse>
+    public class SharePostHandler(IPostRepository postRepository, IUserRepository userRepository, IJwtClaimService jwtClaimService, IUnitOfWork unitOfWork, IRepository<PostShare> shareRepository) : IRequestHandler<SharePostRequest, SharePostResponse>
     {
         public async Task<SharePostResponse> Handle(SharePostRequest request, CancellationToken cancellationToken)
         {
@@ -31,9 +31,7 @@ namespace Linka.Application.Features.Posts.Commands
 
             var newShare = PostShare.Create(currentUser, post);
 
-            post.Shares.Add(newShare);
-
-            await postRepository.Update(post, cancellationToken);
+            await shareRepository.Insert(newShare, cancellationToken);
 
             await unitOfWork.Commit(cancellationToken);
 

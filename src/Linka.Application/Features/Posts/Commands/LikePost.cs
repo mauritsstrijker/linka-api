@@ -11,7 +11,7 @@ namespace Linka.Application.Features.Posts.Commands
         public Guid Id { get; set; }
     }
     public class LikePostResponse;
-    public class LikePostHandler(IPostRepository postRepository, IUserRepository userRepository, IJwtClaimService jwtClaimService, IUnitOfWork unitOfWork) : IRequestHandler<LikePostRequest, LikePostResponse>
+    public class LikePostHandler(IPostRepository postRepository, IUserRepository userRepository, IJwtClaimService jwtClaimService, IUnitOfWork unitOfWork, IRepository<PostLike> likeRepository) : IRequestHandler<LikePostRequest, LikePostResponse>
     {
         public async Task<LikePostResponse> Handle(LikePostRequest request, CancellationToken cancellationToken)
         {
@@ -26,9 +26,7 @@ namespace Linka.Application.Features.Posts.Commands
 
             var newLike = PostLike.Create(currentUser, post);
 
-            post.Likes.Add(newLike);
-
-            await postRepository.Update(post, cancellationToken);
+            await likeRepository.Insert(newLike, cancellationToken);
 
             await unitOfWork.Commit(cancellationToken);
 

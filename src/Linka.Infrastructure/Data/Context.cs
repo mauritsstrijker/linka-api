@@ -64,6 +64,10 @@ public class Context : DbContext, IContext
         //
 
         modelBuilder.Entity<Post>()
+            .HasMany(p => p.Likes)
+            .WithOne(pl => pl.Post);
+
+        modelBuilder.Entity<Post>()
            .HasOne(x => x.Author)
            .WithMany(u => u.Posts)
            .OnDelete(DeleteBehavior.NoAction);
