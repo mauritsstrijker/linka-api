@@ -36,13 +36,14 @@ namespace Linka.Api.Controllers
         }
 
         [Authorize]
-        [HttpGet("events")]
+        [HttpGet("{id}/events")]
         public async Task<List<GetAllEventByVolunteerIdResponse>> GetEventsByVolunteerId
             (
-            CancellationToken cancellationToken
+            CancellationToken cancellationToken,
+            [FromRoute] Guid id    
             )
         {
-            return await mediator.Send(new GetAllEventByVolunteerIdRequest(), cancellationToken);
+            return await mediator.Send(new GetAllEventByVolunteerIdRequest(id), cancellationToken);
         }
     }
 }

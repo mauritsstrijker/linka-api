@@ -90,7 +90,7 @@ namespace Linka.Api.Controllers
 
         [Authorize]
         [HttpGet("user/{userId}")]
-        public async Task<ICollection<PostDto>> GetAll
+        public async Task<ICollection<PostDto>> GetAllByUser
             (
             [FromRoute] Guid userId,
             CancellationToken cancellationToken

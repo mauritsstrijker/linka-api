@@ -1,7 +1,10 @@
 ﻿using FluentValidation;
+using Linka.Application.Common;
 using Linka.Application.Data;
+using Linka.Application.Dtos;
 using Linka.Application.Helpers;
 using Linka.Application.Repositories;
+using Linka.Domain.Entities;
 using MediatR;
 
 namespace Linka.Application.Features.Events.Commands
@@ -11,9 +14,8 @@ namespace Linka.Application.Features.Events.Commands
             Guid Id,
             string Title,
             string Description,
-            DateTime StartDateTime,
-            DateTime EndDateTime,
-            string? ImageBase64
+            string? ImageBase64,
+            CreateAddressDto Address
         ) : IRequest<UpdateEventResponse>;
 
     public sealed record UpdateEventResponse;
@@ -21,6 +23,7 @@ namespace Linka.Application.Features.Events.Commands
     public class UpdateEventHander
         (
         IEventRepository eventRepository,
+        IRepository<Address> addressRepository,
         IUnitOfWork unitOfWork
         )
         : IRequestHandler<UpdateEventRequest, UpdateEventResponse>
@@ -29,9 +32,20 @@ namespace Linka.Application.Features.Events.Commands
         {
             var @event = await eventRepository.Get(request.Id, cancellationToken) ?? throw new Exception("Evento nao foi encontrado.");
 
+            var address = await addressRepository.Get(@event.Address.Id, cancellationToken);
+
+            address.Street = request.Address.Street;
+            address.City = request.Address.City;    
+            address.Cep = request.Address.Cep;
+            address.Neighborhood = request.Address.Neighborhood;
+            address.State = request.Address.State;
+            address.Number = request.Address.Number;
+
+            await addressRepository.Update(address, cancellationToken);
+
             var eventImage = request.ImageBase64 is null ? null : Convert.FromBase64String(request.ImageBase64);
 
-            @event.Update(request.Title, request.Description, request.StartDateTime, request.EndDateTime, eventImage);
+            @event.Update(request.Title, request.Description, eventImage);
 
             await eventRepository.Update(@event, cancellationToken);
 
@@ -54,14 +68,6 @@ namespace Linka.Application.Features.Events.Commands
 
             RuleFor(x => x.Description)
                 .NotEmpty();
-
-            RuleFor(e => e.StartDateTime)
-            .Must(NotBeInThePast)
-            .WithMessage("A data de início não pode estar no passado.");
-
-            RuleFor(e => e.EndDateTime)
-                .GreaterThan(e => e.StartDateTime)
-                .WithMessage("A data de término deve ser posterior à data de início.");
 
             RuleFor(x => x.ImageBase64)
               .MustAsync(async (base64, cancellationToken) => await ProfilePictureHelper.ValidateImageAsync(Convert.FromBase64String(base64), 1080, 450))

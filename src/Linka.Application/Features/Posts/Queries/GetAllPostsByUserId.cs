@@ -1,4 +1,5 @@
-﻿using Linka.Application.Dtos;
+﻿using Linka.Application.Common;
+using Linka.Application.Dtos;
 using Linka.Application.Repositories;
 using Linka.Domain.Entities;
 using Linka.Domain.Enums;
@@ -12,7 +13,7 @@ namespace Linka.Application.Features.Posts.Queries
         public Guid UserId { get; set; }
     }
 
-    public class GetAllPostsByUserIdHandler(IPostRepository postRepository, IPostCommentRepository postCommentRepository, IVolunteerRepository volunteerRepository, IOrganizationRepository organizationRepository) : IRequestHandler<GetAllPostsByUserIdRequest, ICollection<PostDto>>
+    public class GetAllPostsByUserIdHandler(IPostRepository postRepository, IJwtClaimService jwtClaimService, IPostCommentRepository postCommentRepository, IVolunteerRepository volunteerRepository, IOrganizationRepository organizationRepository) : IRequestHandler<GetAllPostsByUserIdRequest, ICollection<PostDto>>
     {
         public async Task<ICollection<PostDto>> Handle(GetAllPostsByUserIdRequest request, CancellationToken cancellationToken)
         {
@@ -43,6 +44,11 @@ namespace Linka.Application.Features.Posts.Queries
                     authorDisplayName = organization.TradingName;
                     authorId = organization.Id;
                 }
+
+                var currentUserId = Guid.Parse(jwtClaimService.GetClaimValue("userId"));
+
+                var currentUserHasLiked = post.Likes.Any(like => like.User.Id == currentUserId);
+                var currentUserHasShared = post.Shares.Any(share => share.User.Id == currentUserId);
 
                 postDtos.Add(new PostDto
                 {

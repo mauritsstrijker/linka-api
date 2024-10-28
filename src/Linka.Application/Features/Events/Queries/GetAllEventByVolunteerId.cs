@@ -9,7 +9,7 @@ namespace Linka.Application.Features.Events.Queries
 {
     public sealed record GetAllEventByVolunteerIdRequest
         (
-
+        Guid VolunteerId
         ) : IRequest<List<GetAllEventByVolunteerIdResponse>>;
 
     public sealed record GetAllEventByVolunteerIdResponse
@@ -33,9 +33,7 @@ namespace Linka.Application.Features.Events.Queries
     {
         public async Task<List<GetAllEventByVolunteerIdResponse>> Handle(GetAllEventByVolunteerIdRequest request, CancellationToken cancellationToken)
         {
-            var currentVolunteerId = jwtClaimService.GetClaimValue("id");
-
-            var events = await eventRepository.GetByVolunteerId(Guid.Parse(currentVolunteerId), cancellationToken);
+            var events = await eventRepository.GetByVolunteerId(request.VolunteerId, cancellationToken);
 
             var response = events.Select(e => new GetAllEventByVolunteerIdResponse(
              e.Id,

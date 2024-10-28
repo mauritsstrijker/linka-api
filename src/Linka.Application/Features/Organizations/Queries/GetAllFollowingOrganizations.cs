@@ -13,6 +13,7 @@ namespace Linka.Application.Features.Organizations.Queries
     public class GetAllFollowingOrganizationsResponse
     {
         public Guid UserId { get; set; }
+        public Guid Id { get; set; }
         public string Email { get; set; }
         public string Username { get; set; }
         public string CompanyName { get; set; }
@@ -35,6 +36,7 @@ namespace Linka.Application.Features.Organizations.Queries
             return organizations.Select(organization => new GetAllFollowingOrganizationsResponse
             {
                 UserId = organization.User.Id,
+                Id = organization.Id,
                 Email = organization.User.Email,
                 Username = organization.User.Username,
                 CompanyName = organization.CompanyName,
