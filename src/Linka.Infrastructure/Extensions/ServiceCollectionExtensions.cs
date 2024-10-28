@@ -21,6 +21,7 @@ internal static class ServiceCollectionExtensions
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IFollowRepository, FollowRepository>();
         services.AddScoped<IPostCommentRepository, PostCommentRepository>();
+        services.AddScoped<IConnectionRequestRepository, ConnectionRequestRepository>();
         services.AddScoped<IJobVolunteerActivityRepository, JobVolunteerActivityRepository>();
     }
 

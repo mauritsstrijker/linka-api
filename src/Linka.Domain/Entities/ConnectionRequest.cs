@@ -1,0 +1,22 @@
+﻿using Linka.Domain.Common;
+using Linka.Domain.Enums;
+
+namespace Linka.Domain.Entities
+{
+    public class ConnectionRequest : BaseEntity
+    {
+        public Volunteer Requester { get; set; }
+        public Volunteer Target { get; set; }
+        public ConnectionRequestStatus Status { get; set; }
+        public static ConnectionRequest Create(Volunteer requester, Volunteer target)
+        {
+            return new ConnectionRequest
+            {
+                Id = Guid.NewGuid(),
+                Requester = requester,
+                Target = target,
+                Status = ConnectionRequestStatus.Pending
+            };
+        }
+    }
+}
