@@ -1,4 +1,5 @@
 ﻿using Linka.Application.Features.Users.Commands;
+using Linka.Application.Features.Users.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,17 @@ namespace Linka.Api.Controllers
             )
         {
             return await mediator.Send(request, cancellationToken);
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<GetUserByIdResponse> GetById
+            (
+            CancellationToken cancellationToken,
+            [FromRoute] Guid id
+            )
+        {
+            return await mediator.Send(new GetUserByIdRequest { Id = id }, cancellationToken);
         }
     }
 }
