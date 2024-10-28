@@ -60,7 +60,9 @@ namespace Linka.Application.Features.Posts.Queries
                     ImageBase64 = post.ImageBytes != null ? Convert.ToBase64String(post.ImageBytes) : null,
                     ShareCount = post.Shares.Count,
                     LikeCount = post.Likes.Count,
-                    CommentCount = commentCount
+                    CommentCount = commentCount,
+                    CurrentUserHasLiked = currentUserHasLiked,
+                    CurrentUserHasShared = currentUserHasShared,    
                 });
             }
 
