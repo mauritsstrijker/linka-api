@@ -16,5 +16,13 @@ namespace Linka.Infrastructure.Data.Repositories
                     && cr.Status == ConnectionRequestStatus.Pending,
                     cancellationToken);
         }
+        public async Task<ConnectionRequest> GetPendingRequestAsync(Guid requesterId, Guid targetId, CancellationToken cancellationToken)
+        {
+            return await _context.ConnectionRequests
+                .FirstOrDefaultAsync(cr =>
+                    (cr.Requester.Id == requesterId && cr.Target.Id == targetId) ||
+                    (cr.Requester.Id == targetId && cr.Target.Id == requesterId) &&
+                    cr.Status == ConnectionRequestStatus.Pending, cancellationToken);
+        }
     }
 }
