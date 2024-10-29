@@ -7,6 +7,13 @@ namespace Linka.Infrastructure.Data.Repositories
 {
     public class ConnectionRequestRepository(Context context) : Repository<ConnectionRequest>(context), IConnectionRequestRepository
     {
+        public override Task<ConnectionRequest?> Get(Guid id, CancellationToken cancellationToken)
+        {
+            return _context.ConnectionRequests
+                .Include(x => x.Requester)
+                .Include(x => x.Target)
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        }
         public async Task<bool> HasPendingConnectionRequestAsync(Guid volunteerId1, Guid volunteerId2, CancellationToken cancellationToken)
         {
             return await _context.ConnectionRequests

@@ -18,7 +18,8 @@ namespace Linka.Application.Features.ConnectionRequests.Commands
         IJwtClaimService jwtClaimService,
         IVolunteerRepository volunteerRepository,
         IConnectionRequestRepository repository,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        IConnectionRepository connectionRepository
         ) : IRequestHandler<AskForConnectionRequest, AskForConnectionResponse>
     {
         public async Task<AskForConnectionResponse> Handle(AskForConnectionRequest request, CancellationToken cancellationToken)
@@ -26,6 +27,11 @@ namespace Linka.Application.Features.ConnectionRequests.Commands
             var currentUserId = Guid.Parse(jwtClaimService.GetClaimValue("id"));
             var requesterVolunteer = await volunteerRepository.GetByUserId(currentUserId, cancellationToken) ?? throw new Exception();
             var targetVolunteer = await volunteerRepository.GetByUserId(request.TargetVolunteerId, cancellationToken) ?? throw new Exception();
+
+            if (await connectionRepository.HasConnectionAsync(requesterVolunteer.Id, targetVolunteer.Id, cancellationToken))
+            {
+                throw new Exception("Já existe uma amizade entre os dois usuários.");
+            }
 
             if (!await repository.HasPendingConnectionRequestAsync(currentUserId, request.TargetVolunteerId, cancellationToken)) { 
                 var newConnectionRequest = ConnectionRequest.Create(requesterVolunteer, targetVolunteer);

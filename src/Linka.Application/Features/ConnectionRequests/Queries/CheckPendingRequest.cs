@@ -12,6 +12,7 @@ public class CheckPendingRequestResponse
 {
     public bool IsPending { get; set; }
     public bool? IsCurrentUserRequester { get; set; }
+    public Guid? ConnectionRequestId { get; set; }
 }
 
 public class CheckPendingRequestHandler(IConnectionRequestRepository repository, IJwtClaimService jwtClaimService) : IRequestHandler<CheckPendingRequestRequest, CheckPendingRequestResponse>
@@ -27,7 +28,8 @@ public class CheckPendingRequestHandler(IConnectionRequestRepository repository,
             return new CheckPendingRequestResponse
             {
                 IsPending = true,
-                IsCurrentUserRequester = connectionRequest.Requester.Id == currentUserId
+                IsCurrentUserRequester = connectionRequest.Requester.Id == currentUserId,
+                ConnectionRequestId = connectionRequest.Id
             };
         }
 

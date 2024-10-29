@@ -33,5 +33,26 @@ namespace Linka.Api.Controllers
             return await mediator.Send(new CheckPendingRequestRequest{ VolunteerId = volunteerId }, cancellationToken);
         }
            
+        [Authorize]
+        [HttpPost("accept")]
+        public async Task<AcceptConnectionResponse> AcceptConnectionRequest
+            (
+            [FromBody] AcceptConnectionRequest request,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(request, cancellationToken);
+        }
+
+        [Authorize]
+        [HttpPost("reject")]
+        public async Task<RejectConnectionResponse> RejectConnectionRequest
+           (
+           [FromBody] RejectConnectionRequest request,
+           CancellationToken cancellationToken
+           )
+        {
+            return await mediator.Send(request, cancellationToken);
+        }
     }
 }

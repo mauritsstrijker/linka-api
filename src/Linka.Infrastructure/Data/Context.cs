@@ -22,6 +22,7 @@ public class Context : DbContext, IContext
     public DbSet<PostShare> PostShares { get; set; }
     public DbSet<Follow> Follows { get; set; }
     public DbSet<ConnectionRequest> ConnectionRequests { get; set; }
+    public DbSet<Connection> Connections { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Event>()
