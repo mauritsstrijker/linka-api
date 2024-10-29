@@ -54,5 +54,15 @@ namespace Linka.Api.Controllers
         {
             return await mediator.Send(request, cancellationToken);
         }
+
+        [Authorize]
+        [HttpGet("pending")]
+        public async Task<GetAllConnectionRequestResponse> GetAllPendingRequests
+            (
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new GetAllConnectionRequest(), cancellationToken);
+        }
     }
 }
