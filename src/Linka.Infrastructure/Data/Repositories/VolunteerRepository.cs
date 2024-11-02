@@ -10,6 +10,7 @@ namespace Linka.Infrastructure.Data.Repositories
         {
             return _context.Volunteers
                 .Include(x => x.User)
+                .Include(x => x.Address)
                 .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         }
         public Task<Volunteer> GetByCPF(string cpf, CancellationToken cancellationToken)

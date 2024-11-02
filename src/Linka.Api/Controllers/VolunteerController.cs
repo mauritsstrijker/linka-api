@@ -45,5 +45,16 @@ namespace Linka.Api.Controllers
         {
             return await mediator.Send(new GetAllEventByVolunteerIdRequest(id), cancellationToken);
         }
+
+        [Authorize]
+        [HttpPatch("update")]
+        public async Task<UpdateVolunteerResponse> UpdateVolunteer
+            (
+            CancellationToken cancellationToken,
+            [FromBody] UpdateVolunteerRequest request
+            )
+        {
+            return await mediator.Send(request, cancellationToken);
+        }
     }
 }

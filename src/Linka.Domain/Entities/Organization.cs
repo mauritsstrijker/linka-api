@@ -8,6 +8,7 @@ namespace Linka.Domain.Entities
         public string CompanyName { get; set; }
         public string TradingName { get; set; }
         public string Phone { get; set; }
+        public string? About { get; set; }
         public Address Address { get; set; }
         public User User { get; set; }
         public byte[]? ProfilePictureBytes { get; set; }

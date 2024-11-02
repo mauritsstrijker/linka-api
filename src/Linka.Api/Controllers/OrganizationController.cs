@@ -1,5 +1,6 @@
 ﻿using Linka.Application.Features.Organizations.Commands;
 using Linka.Application.Features.Organizations.Queries;
+using Linka.Application.Features.Volunteers.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +63,17 @@ namespace Linka.Api.Controllers
             )
         {
             return await mediator.Send(new GetAllFollowingOrganizationsRequest(), cancellationToken);
+        }
+
+        [Authorize]
+        [HttpPatch("update")]
+        public async Task<UpdateOrganizationResponse> UpdateOrganization
+          (
+          CancellationToken cancellationToken,
+          [FromBody] UpdateOrganizationRequest request
+          )
+        {
+            return await mediator.Send(request, cancellationToken);
         }
     }
 }
