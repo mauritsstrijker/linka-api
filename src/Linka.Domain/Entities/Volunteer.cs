@@ -1,4 +1,5 @@
 ﻿using Linka.Domain.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Linka.Domain.Entities
 {
@@ -19,7 +20,16 @@ namespace Linka.Domain.Entities
         public byte[]? ProfilePictureBytes { get; set; }
         public string? ProfilePictureExtension { get; set; }
         public List<EventJob> Jobs { get; set; }
+        [InverseProperty("Requester")]
+        public List<ConnectionRequest> SentRequests { get; set; }
 
+        [InverseProperty("Target")]
+        public List<ConnectionRequest> ReceivedRequests { get; set; }
+        [InverseProperty("Volunteer1")]
+        public List<Connection> ConnectionsAsVolunteer1 { get; set; }
+
+        [InverseProperty("Volunteer2")]
+        public List<Connection> ConnectionsAsVolunteer2 { get; set; }
         public static Volunteer Create
             (
             string cpf,

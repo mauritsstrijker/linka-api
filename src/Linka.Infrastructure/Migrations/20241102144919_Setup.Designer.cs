@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Linka.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20241026172759_Follow1")]
-    partial class Follow1
+    [Migration("20241102144919_Setup")]
+    partial class Setup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +78,57 @@ namespace Linka.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("Linka.Domain.Entities.Connection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Volunteer1Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Volunteer2Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Volunteer1Id");
+
+                    b.HasIndex("Volunteer2Id");
+
+                    b.ToTable("Connections");
+                });
+
+            modelBuilder.Entity("Linka.Domain.Entities.ConnectionRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("RequesterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TargetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequesterId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("ConnectionRequests");
                 });
 
             modelBuilder.Entity("Linka.Domain.Entities.Event", b =>
@@ -456,6 +507,44 @@ namespace Linka.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Linka.Domain.Entities.Connection", b =>
+                {
+                    b.HasOne("Linka.Domain.Entities.Volunteer", "Volunteer1")
+                        .WithMany("ConnectionsAsVolunteer1")
+                        .HasForeignKey("Volunteer1Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Linka.Domain.Entities.Volunteer", "Volunteer2")
+                        .WithMany("ConnectionsAsVolunteer2")
+                        .HasForeignKey("Volunteer2Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Volunteer1");
+
+                    b.Navigation("Volunteer2");
+                });
+
+            modelBuilder.Entity("Linka.Domain.Entities.ConnectionRequest", b =>
+                {
+                    b.HasOne("Linka.Domain.Entities.Volunteer", "Requester")
+                        .WithMany("SentRequests")
+                        .HasForeignKey("RequesterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Linka.Domain.Entities.Volunteer", "Target")
+                        .WithMany("ReceivedRequests")
+                        .HasForeignKey("TargetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Requester");
+
+                    b.Navigation("Target");
+                });
+
             modelBuilder.Entity("Linka.Domain.Entities.Event", b =>
                 {
                     b.HasOne("Linka.Domain.Entities.Address", "Address")
@@ -666,6 +755,17 @@ namespace Linka.Infrastructure.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("Shares");
+                });
+
+            modelBuilder.Entity("Linka.Domain.Entities.Volunteer", b =>
+                {
+                    b.Navigation("ConnectionsAsVolunteer1");
+
+                    b.Navigation("ConnectionsAsVolunteer2");
+
+                    b.Navigation("ReceivedRequests");
+
+                    b.Navigation("SentRequests");
                 });
 #pragma warning restore 612, 618
         }

@@ -88,6 +88,30 @@ public class Context : DbContext, IContext
          .HasOne(x => x.Author)
          .WithMany(u => u.Comments)
          .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<ConnectionRequest>()
+       .HasOne(cr => cr.Requester)
+       .WithMany(v => v.SentRequests)
+       .HasForeignKey("RequesterId")
+       .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<ConnectionRequest>()
+            .HasOne(cr => cr.Target)
+            .WithMany(v => v.ReceivedRequests)
+            .HasForeignKey("TargetId")
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Connection>()
+       .HasOne(c => c.Volunteer1)
+       .WithMany(v => v.ConnectionsAsVolunteer1)
+       .HasForeignKey("Volunteer1Id")
+       .OnDelete(DeleteBehavior.Restrict); 
+
+        modelBuilder.Entity<Connection>()
+            .HasOne(c => c.Volunteer2)
+            .WithMany(v => v.ConnectionsAsVolunteer2)
+            .HasForeignKey("Volunteer2Id")
+            .OnDelete(DeleteBehavior.Restrict); 
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

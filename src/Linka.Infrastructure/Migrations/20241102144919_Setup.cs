@@ -167,6 +167,85 @@ namespace Linka.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ConnectionRequests",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RequesterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TargetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConnectionRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ConnectionRequests_Volunteers_RequesterId",
+                        column: x => x.RequesterId,
+                        principalTable: "Volunteers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ConnectionRequests_Volunteers_TargetId",
+                        column: x => x.TargetId,
+                        principalTable: "Volunteers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Connections",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Volunteer1Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Volunteer2Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Connections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Connections_Volunteers_Volunteer1Id",
+                        column: x => x.Volunteer1Id,
+                        principalTable: "Volunteers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Connections_Volunteers_Volunteer2Id",
+                        column: x => x.Volunteer2Id,
+                        principalTable: "Volunteers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Follows",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrganizationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VolunteerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Follows", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Follows_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Follows_Volunteers_VolunteerId",
+                        column: x => x.VolunteerId,
+                        principalTable: "Volunteers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EventJobs",
                 columns: table => new
                 {
@@ -317,6 +396,26 @@ namespace Linka.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ConnectionRequests_RequesterId",
+                table: "ConnectionRequests",
+                column: "RequesterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConnectionRequests_TargetId",
+                table: "ConnectionRequests",
+                column: "TargetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Connections_Volunteer1Id",
+                table: "Connections",
+                column: "Volunteer1Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Connections_Volunteer2Id",
+                table: "Connections",
+                column: "Volunteer2Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EventJobs_EventId",
                 table: "EventJobs",
                 column: "EventId");
@@ -335,6 +434,16 @@ namespace Linka.Infrastructure.Migrations
                 name: "IX_Events_OrganizationId",
                 table: "Events",
                 column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Follows_OrganizationId",
+                table: "Follows",
+                column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Follows_VolunteerId",
+                table: "Follows",
+                column: "VolunteerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_JobVolunterActivities_JobId",
@@ -411,7 +520,16 @@ namespace Linka.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ConnectionRequests");
+
+            migrationBuilder.DropTable(
+                name: "Connections");
+
+            migrationBuilder.DropTable(
                 name: "EventJobVolunteer");
+
+            migrationBuilder.DropTable(
+                name: "Follows");
 
             migrationBuilder.DropTable(
                 name: "JobVolunterActivities");

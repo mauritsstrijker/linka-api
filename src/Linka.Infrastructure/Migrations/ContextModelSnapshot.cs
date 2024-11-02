@@ -507,15 +507,15 @@ namespace Linka.Infrastructure.Migrations
             modelBuilder.Entity("Linka.Domain.Entities.Connection", b =>
                 {
                     b.HasOne("Linka.Domain.Entities.Volunteer", "Volunteer1")
-                        .WithMany()
+                        .WithMany("ConnectionsAsVolunteer1")
                         .HasForeignKey("Volunteer1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Linka.Domain.Entities.Volunteer", "Volunteer2")
-                        .WithMany()
+                        .WithMany("ConnectionsAsVolunteer2")
                         .HasForeignKey("Volunteer2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Volunteer1");
@@ -526,15 +526,15 @@ namespace Linka.Infrastructure.Migrations
             modelBuilder.Entity("Linka.Domain.Entities.ConnectionRequest", b =>
                 {
                     b.HasOne("Linka.Domain.Entities.Volunteer", "Requester")
-                        .WithMany()
+                        .WithMany("SentRequests")
                         .HasForeignKey("RequesterId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Linka.Domain.Entities.Volunteer", "Target")
-                        .WithMany()
+                        .WithMany("ReceivedRequests")
                         .HasForeignKey("TargetId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Requester");
@@ -752,6 +752,17 @@ namespace Linka.Infrastructure.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("Shares");
+                });
+
+            modelBuilder.Entity("Linka.Domain.Entities.Volunteer", b =>
+                {
+                    b.Navigation("ConnectionsAsVolunteer1");
+
+                    b.Navigation("ConnectionsAsVolunteer2");
+
+                    b.Navigation("ReceivedRequests");
+
+                    b.Navigation("SentRequests");
                 });
 #pragma warning restore 612, 618
         }
