@@ -1,5 +1,7 @@
 ﻿using Linka.Application.Common;
+using Linka.Application.Data;
 using Linka.Application.Repositories;
+using Linka.Domain.Entities;
 using MediatR;
 
 namespace Linka.Application.Features.Organizations.Commands
@@ -13,7 +15,8 @@ namespace Linka.Application.Features.Organizations.Commands
     public class RemoveOrganizationHandler
         (
         IOrganizationRepository repository,
-        IJwtClaimService jwtClaimService
+        IJwtClaimService jwtClaimService,
+        IUnitOfWork unitOfWork
         )
         : IRequestHandler<RemoveOrganizationAvatarRequest, RemoveOrganizationAvatarResponse>
     {
@@ -25,6 +28,10 @@ namespace Linka.Application.Features.Organizations.Commands
 
             organization.ProfilePictureExtension = null;
             organization.ProfilePictureBytes = null;
+
+            await repository.Update(organization, cancellationToken);
+
+            await unitOfWork.Commit(cancellationToken);
 
             return new RemoveOrganizationAvatarResponse();
         }

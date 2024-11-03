@@ -1,4 +1,5 @@
 ﻿using Linka.Application.Common;
+using Linka.Application.Data;
 using Linka.Application.Repositories;
 using MediatR;
 
@@ -13,7 +14,8 @@ namespace Linka.Application.Features.Volunteers.Commands
     public class RemoveVolunteerHandler
         (
         IVolunteerRepository repository,
-        IJwtClaimService jwtClaimService
+        IJwtClaimService jwtClaimService,
+        IUnitOfWork unitOfWork
         )
         : IRequestHandler<RemoveVolunteerAvatarRequest, RemoveVolunteerAvatarResponse>
     {
@@ -25,6 +27,10 @@ namespace Linka.Application.Features.Volunteers.Commands
 
             volunteer.ProfilePictureExtension = null;
             volunteer.ProfilePictureBytes = null;
+
+            await repository.Update(volunteer, cancellationToken);
+
+            await unitOfWork.Commit(cancellationToken);
 
             return new RemoveVolunteerAvatarResponse();
         }
