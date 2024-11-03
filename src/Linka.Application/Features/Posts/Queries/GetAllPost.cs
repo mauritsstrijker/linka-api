@@ -63,6 +63,7 @@ namespace Linka.Application.Features.Posts.Queries
                     CommentCount = commentCount,
                     CurrentUserHasLiked = currentUserHasLiked,
                     CurrentUserHasShared = currentUserHasShared,    
+                    DateCreated = post.DateCreated,
                 });
             }
 

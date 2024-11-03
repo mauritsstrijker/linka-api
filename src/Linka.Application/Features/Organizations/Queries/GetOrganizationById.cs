@@ -19,6 +19,7 @@ namespace Linka.Application.Features.Organizations.Queries
             string CompanyName,
             string TradingName,
             string Phone,
+            string About,
             AddressDto Address,
             string ProfilePictureBase64
         );
@@ -45,6 +46,7 @@ namespace Linka.Application.Features.Organizations.Queries
                 CompanyName: organization.CompanyName,
                 TradingName: organization.TradingName,
                 Phone: organization.Phone,
+                About: organization.About,
                 Address: new AddressDto
                 (
                     Id: organization.Address.Id,

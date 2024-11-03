@@ -16,5 +16,6 @@ namespace Linka.Application.Dtos
         public int CommentCount { get; set; }   
         public bool CurrentUserHasLiked { get; set; }
         public bool CurrentUserHasShared { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }
