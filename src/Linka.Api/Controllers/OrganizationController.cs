@@ -75,5 +75,15 @@ namespace Linka.Api.Controllers
         {
             return await mediator.Send(request, cancellationToken);
         }
+
+        [Authorize]
+        [HttpPost("remove-avatar")]
+        public async Task<RemoveOrganizationAvatarResponse> RemoveAvatar
+          (
+          CancellationToken cancellationToken
+          )
+        {
+            return await mediator.Send(new RemoveOrganizationAvatarRequest(), cancellationToken);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Linka.Application.Features.Events.Queries;
+using Linka.Application.Features.Organizations.Commands;
 using Linka.Application.Features.Volunteers.Commands;
 using Linka.Application.Features.Volunteers.Queries;
 using Linka.Domain.Entities;
@@ -55,6 +56,17 @@ namespace Linka.Api.Controllers
             )
         {
             return await mediator.Send(request, cancellationToken);
+        }
+
+
+        [Authorize]
+        [HttpPost("remove-avatar")]
+        public async Task<RemoveVolunteerAvatarResponse> RemoveAvatar
+          (
+          CancellationToken cancellationToken
+          )
+        {
+            return await mediator.Send(new RemoveVolunteerAvatarRequest(), cancellationToken);
         }
     }
 }

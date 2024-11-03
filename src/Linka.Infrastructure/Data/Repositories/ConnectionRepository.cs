@@ -5,6 +5,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Linka.Infrastructure.Data.Repositories;
 public class ConnectionRepository(Context context) : Repository<Connection>(context), IConnectionRepository
 {
+    public Task<int> ConnectionsCountByVolunteerId(Guid volunteerId, CancellationToken cancellationToken)
+    {
+        return _context.Connections
+        .Where(c => c.Volunteer1.Id == volunteerId || c.Volunteer2.Id == volunteerId)
+        .CountAsync(cancellationToken);
+    }
+
     public async Task<bool> HasConnectionAsync(Guid volunteerId1, Guid volunteerId2, CancellationToken cancellationToken)
     {
         return await _context.Connections

@@ -7,5 +7,6 @@ namespace Linka.Application.Repositories
     {
         Task<bool> IsFollowing(Guid organizationId, Guid volunteerId, CancellationToken cancellationToken);
         Task<Follow?> GetByOrganizationIdAndVolunteerId(Guid organizationId, Guid volunteerId, CancellationToken cancellationToken);
+        Task<int> FollowersCountById(Guid organizationId, CancellationToken cancellationToken);
     }
 }

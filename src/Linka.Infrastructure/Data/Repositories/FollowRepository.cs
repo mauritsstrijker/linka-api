@@ -6,6 +6,13 @@ namespace Linka.Infrastructure.Data.Repositories
 {
     public class FollowRepository(Context context) : Repository<Follow>(context), IFollowRepository
     {
+        public Task<int> FollowersCountById(Guid organizationId, CancellationToken cancellationToken)
+        {
+            return _context.Follows
+                .Where(x => x.Organization.Id == organizationId)
+                .CountAsync(cancellationToken);
+        }
+
         public override Task<List<Follow>> GetAll(CancellationToken cancellationToken)
         {
             return _context.Follows

@@ -19,24 +19,27 @@ namespace Linka.Application.Features.Organizations.Queries
             string CompanyName,
             string TradingName,
             string Phone,
-            string About,
+            string? About,
             AddressDto Address,
-            string ProfilePictureBase64
+            string ProfilePictureBase64,
+            int FollowersCount
         );
 
     public class GetOrganizationByIdHandler
         (
-        IOrganizationRepository organizationRepository
+        IOrganizationRepository organizationRepository,
+        IFollowRepository followRepository
         ) : IRequestHandler<GetOrganizationByIdRequest, GetOrganizationByIdResponse>
     {
         public async Task<GetOrganizationByIdResponse> Handle(GetOrganizationByIdRequest request, CancellationToken cancellationToken)
         {
             var organization = await organizationRepository.Get(request.Id, cancellationToken) ?? throw new Exception("Organização não encontrada.");
+            var followersCount = await followRepository.FollowersCountById(organization.Id, cancellationToken);
 
-            return MapToDto(organization);
+            return MapToDto(organization, followersCount);
         }
 
-        public static GetOrganizationByIdResponse MapToDto(Organization organization)
+        public static GetOrganizationByIdResponse MapToDto(Organization organization, int followersCount)
         {
             return new GetOrganizationByIdResponse
             (
@@ -60,8 +63,9 @@ namespace Linka.Application.Features.Organizations.Queries
                 ),
                 ProfilePictureBase64: organization.ProfilePictureBytes != null
                     ? Convert.ToBase64String(organization.ProfilePictureBytes)
-                    : null
-            );
+                    : null,
+                FollowersCount: followersCount
+            ); 
         }
     }
     public class GetOrganizationByIdValidator : AbstractValidator<GetOrganizationByIdRequest>
