@@ -25,8 +25,8 @@ namespace Linka.Application.Features.ConnectionRequests.Commands
         public async Task<AskForConnectionResponse> Handle(AskForConnectionRequest request, CancellationToken cancellationToken)
         {
             var currentUserId = Guid.Parse(jwtClaimService.GetClaimValue("id"));
-            var requesterVolunteer = await volunteerRepository.GetByUserId(currentUserId, cancellationToken) ?? throw new Exception();
-            var targetVolunteer = await volunteerRepository.GetByUserId(request.TargetVolunteerId, cancellationToken) ?? throw new Exception();
+            var requesterVolunteer = await volunteerRepository.Get(currentUserId, cancellationToken) ?? throw new Exception();
+            var targetVolunteer = await volunteerRepository.Get(request.TargetVolunteerId, cancellationToken) ?? throw new Exception();
 
             if (await connectionRepository.HasConnectionAsync(requesterVolunteer.Id, targetVolunteer.Id, cancellationToken))
             {
