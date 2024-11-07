@@ -1,5 +1,6 @@
 ﻿using Linka.Application.Features.ConnectionRequests.Commands;
 using Linka.Application.Features.ConnectionRequests.Queries;
+using Linka.Application.Features.Connections;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,18 @@ namespace Linka.Api.Controllers
         {
             return await mediator.Send(new CheckPendingRequestRequest{ VolunteerId = volunteerId }, cancellationToken);
         }
-           
+
+        [Authorize]
+        [HttpGet("check/{volunteerId}")]
+        public async Task<CheckConnectionResponse> Check
+            (
+            [FromRoute] Guid volunteerId,
+            CancellationToken cancellationToken
+            )
+        {
+            return await mediator.Send(new CheckConnectionRequest { VolunteerId = volunteerId }, cancellationToken);
+        }
+
         [Authorize]
         [HttpPost("accept")]
         public async Task<AcceptConnectionResponse> AcceptConnectionRequest
