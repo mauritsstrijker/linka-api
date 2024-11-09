@@ -76,5 +76,15 @@ namespace Linka.Api.Controllers
         {
             return await mediator.Send(new GetAllConnectionRequest(), cancellationToken);
         }
+        [Authorize]
+        [HttpPost("break-up")]
+        public async Task<BreakUpConnectionResponse> RejectConnectionRequest
+           (
+           [FromBody] BreakUpConnectionRequest request,
+           CancellationToken cancellationToken
+           )
+        {
+            return await mediator.Send(request, cancellationToken);
+        }
     }
 }
