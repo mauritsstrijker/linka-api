@@ -20,4 +20,13 @@ public class ConnectionRepository(Context context) : Repository<Connection>(cont
                 (c.Volunteer1.Id == volunteerId2 && c.Volunteer2.Id == volunteerId1),
                 cancellationToken);
     }
+    public async Task<Connection> GetConnection(Guid volunteerId1, Guid volunteerId2, CancellationToken cancellationToken)
+    {
+        return await _context.Connections
+        .FirstOrDefaultAsync(c =>
+            (c.Volunteer1.Id == volunteerId1 && c.Volunteer2.Id == volunteerId2) ||
+            (c.Volunteer1.Id == volunteerId2 && c.Volunteer2.Id == volunteerId1),
+            cancellationToken);
+
+    }
 }

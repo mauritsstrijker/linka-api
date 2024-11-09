@@ -37,8 +37,8 @@ namespace Linka.Infrastructure.Data.Repositories
                 .Include(x => x.Requester)
                 .Include(x => x.Target)
                 .FirstOrDefaultAsync(cr =>
-                    (cr.Requester.Id == requesterId && cr.Target.Id == targetId) ||
-                    (cr.Requester.Id == targetId && cr.Target.Id == requesterId) &&
+                    (cr.Requester.Id == requesterId && cr.Target.Id == targetId ||
+                    cr.Requester.Id == targetId && cr.Target.Id == requesterId) &&
                     cr.Status == ConnectionRequestStatus.Pending, cancellationToken);
         }
     }
