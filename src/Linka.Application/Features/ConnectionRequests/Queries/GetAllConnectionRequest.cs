@@ -1,4 +1,5 @@
 ﻿using Linka.Application.Common;
+using Linka.Application.Features.ConnectionRequests.Models;
 using Linka.Application.Repositories;
 using Linka.Domain.Entities;
 using MediatR;
@@ -10,7 +11,7 @@ public class GetAllConnectionRequest : IRequest<GetAllConnectionRequestResponse>
 
 public class GetAllConnectionRequestResponse
 {
-    public List<ConnectionRequest> ConnectionRequests { get; set; }
+    public List<ConnectionRequestDto> ConnectionRequests { get; set; }
 
 }
 
@@ -31,9 +32,16 @@ public class GetAllConnectionRequestHandler : IRequestHandler<GetAllConnectionRe
 
         var connectionRequests = await _connectionRequestRepository.GetByTargetIdAsync(currentUserId, cancellationToken);
 
+        var connectionRequestDtos = connectionRequests.Select(cr => new ConnectionRequestDto
+        {
+            RequesterId = cr.Requester.Id,
+            TargetId = cr.Target.Id,
+            Status = cr.Status
+        }).ToList();
+
         return new GetAllConnectionRequestResponse
         {
-            ConnectionRequests = connectionRequests
+            ConnectionRequests = connectionRequestDtos
         };
     }
 }
