@@ -12,11 +12,21 @@ namespace Linka.Application.Features.Posts.Queries
     {
     }
 
-    public class GetAllPostHandler(IPostRepository postRepository, IJwtClaimService jwtClaimService,IPostCommentRepository postCommentRepository, IVolunteerRepository volunteerRepository, IOrganizationRepository organizationRepository) : IRequestHandler<GetAllPostRequest, ICollection<PostDto>>
+    public class GetAllPostHandler(IPostRepository postRepository, IFeedService feedService, IJwtClaimService jwtClaimService,IPostCommentRepository postCommentRepository, IVolunteerRepository volunteerRepository, IOrganizationRepository organizationRepository) : IRequestHandler<GetAllPostRequest, ICollection<PostDto>>
     {
         public async Task<ICollection<PostDto>> Handle(GetAllPostRequest request, CancellationToken cancellationToken)
         {
-            var posts = await postRepository.GetAll(cancellationToken);
+            var userType = jwtClaimService.GetClaimValue("type");
+            List<Post> posts = [];
+
+            if (userType == "volunteer")
+            {
+                posts = await feedService.GetFeedForVolunteerAsync(Guid.Parse(jwtClaimService.GetClaimValue("id")));
+            } 
+            else
+            {
+                posts = await postRepository.GetAll(cancellationToken);
+            }
 
             return await MapPostsToDto(posts, cancellationToken);
         }
