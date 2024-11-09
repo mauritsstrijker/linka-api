@@ -78,7 +78,7 @@ namespace Linka.Api.Controllers
         }
         [Authorize]
         [HttpPost("break-up")]
-        public async Task<BreakUpConnectionResponse> RejectConnectionRequest
+        public async Task<BreakUpConnectionResponse> BreakUpConnection
            (
            [FromBody] BreakUpConnectionRequest request,
            CancellationToken cancellationToken
