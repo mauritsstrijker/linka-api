@@ -34,6 +34,7 @@ public class GetAllConnectionRequestHandler : IRequestHandler<GetAllConnectionRe
 
         var connectionRequestDtos = connectionRequests.Select(cr => new ConnectionRequestDto
         {
+            Id = cr.Id,
             RequesterId = cr.Requester.Id,
             TargetId = cr.Target.Id,
             Status = cr.Status

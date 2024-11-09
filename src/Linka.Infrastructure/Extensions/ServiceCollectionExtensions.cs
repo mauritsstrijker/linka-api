@@ -4,6 +4,7 @@ using Linka.Application.Helpers;
 using Linka.Application.Repositories;
 using Linka.Infrastructure.Data;
 using Linka.Infrastructure.Data.Repositories;
+using Linka.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +25,7 @@ internal static class ServiceCollectionExtensions
         services.AddScoped<IConnectionRequestRepository, ConnectionRequestRepository>();
         services.AddScoped<IConnectionRepository, ConnectionRepository>();
         services.AddScoped<IJobVolunteerActivityRepository, JobVolunteerActivityRepository>();
+        services.AddScoped<IFeedService, FeedService>();
     }
 
     internal static void SetupServices(this IServiceCollection services)
