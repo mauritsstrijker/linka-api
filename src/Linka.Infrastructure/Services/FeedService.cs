@@ -1,6 +1,8 @@
 ﻿using Linka.Application.Common;
+using Linka.Application.Dtos;
 using Linka.Domain.Entities;
 using Linka.Infrastructure.Data;
+using Linka.Infrastructure.Services.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -95,6 +97,10 @@ public class FeedService : IFeedService
     {
         var posts = await _context.Posts
             .Where(post => post.AssociatedOrganization.Id == organizationId)
+            .Include(p => p.Likes)
+            .Include(p => p.Shares)
+            .Include(p => p.AssociatedOrganization)
+            .Include(p => p.Author)
             .ToListAsync();
 
         var scoredPosts = posts
@@ -125,5 +131,51 @@ public class FeedService : IFeedService
         return score;
     }
 
+    public async Task<List<SearchResultDto>> SearchAsync(string searchTerm)
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            return new List<SearchResultDto>();
+        }
+
+        string searchLower = searchTerm.ToLower();
+
+        var volunteers = await _context.Volunteers
+            .Where(v => v.FullName.ToLower().Contains(searchLower))
+            .Select(v => new SearchResultDto
+            {
+                Type = "Volunteer",
+                DisplayName = v.FullName,
+                Id = v.Id
+            })
+            .ToListAsync();
+
+        var organizations = await _context.Organizations
+            .Where(o => o.TradingName.ToLower().Contains(searchLower))
+            .Select(o => new SearchResultDto
+            {
+                Type = "Organization",
+                DisplayName = o.TradingName,
+                Id = o.Id
+            })
+            .ToListAsync();
+
+        var events = await _context.Events
+            .Where(e => e.Title.ToLower().Contains(searchLower))
+            .Select(e => new SearchResultDto
+            {
+                Type = "Event",
+                DisplayName = e.Title,
+                Id = e.Id
+            })
+            .ToListAsync();
+
+        var result = new List<SearchResultDto>();
+        result.AddRange(volunteers);
+        result.AddRange(organizations);
+        result.AddRange(events);
+
+        return result;
+    }
 }
 
