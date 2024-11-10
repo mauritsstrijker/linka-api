@@ -25,7 +25,7 @@ namespace Linka.Application.Features.Posts.Queries
             } 
             else
             {
-                posts = await postRepository.GetAll(cancellationToken);
+                posts = await feedService.GetOrganizationFeed(Guid.Parse(jwtClaimService.GetClaimValue("id")));
             }
 
             return await MapPostsToDto(posts, cancellationToken);

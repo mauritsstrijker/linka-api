@@ -52,7 +52,6 @@ public class FeedService : IFeedService
                 Score = CalculatePostScoreForVolunteerFeed(p, friends, followingOrganizations)
             })
             .OrderByDescending(p => p.Score)
-            .ThenByDescending(p => p.Post.DateCreated)
             //.Take(20) 
             .Select(p => p.Post)
             .ToList();
@@ -85,6 +84,34 @@ public class FeedService : IFeedService
         score += post.Likes.Count(like => friendIds.Contains(like.User.Id)) * 3;
 
         score += post.Shares.Count(share => friendIds.Contains(share.User.Id)) * 4;
+
+        var hoursSincePost = (DateTime.UtcNow - post.DateCreated).TotalHours;
+        score += Math.Max(0, 10 - hoursSincePost);
+
+        return score;
+    }
+
+    public async Task<List<Post>> GetOrganizationFeed(Guid organizationId)
+    {
+        return await _context.Posts
+            .Where(post => post.AssociatedOrganization != null && post.AssociatedOrganization.Id == organizationId)
+            .Select(post => new
+            {
+                Post = post,
+                Score = CalculateScoreForOrganizationPost(post)
+            })
+            .OrderByDescending(x => x.Score)
+            .Select(x => x.Post)
+            .ToListAsync();
+    }
+
+    private double CalculateScoreForOrganizationPost(Post post)
+    {
+        double score = 0;
+
+        score += Math.Sqrt(post.Likes.Count) * 2;
+        score += Math.Sqrt(post.Comments.Count) * 1.5; 
+        score += Math.Sqrt(post.Shares.Count) * 3;     
 
         var hoursSincePost = (DateTime.UtcNow - post.DateCreated).TotalHours;
         score += Math.Max(0, 10 - hoursSincePost);
