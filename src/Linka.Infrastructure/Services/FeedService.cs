@@ -93,8 +93,11 @@ public class FeedService : IFeedService
 
     public async Task<List<Post>> GetOrganizationFeed(Guid organizationId)
     {
-        return await _context.Posts
-            .Where(post => post.AssociatedOrganization != null && post.AssociatedOrganization.Id == organizationId)
+        var posts = await _context.Posts
+            .Where(post => post.AssociatedOrganization.Id == organizationId)
+            .ToListAsync();
+
+        var scoredPosts = posts
             .Select(post => new
             {
                 Post = post,
@@ -102,8 +105,11 @@ public class FeedService : IFeedService
             })
             .OrderByDescending(x => x.Score)
             .Select(x => x.Post)
-            .ToListAsync();
+            .ToList();
+
+        return scoredPosts;
     }
+
 
     private double CalculateScoreForOrganizationPost(Post post)
     {
