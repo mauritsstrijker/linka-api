@@ -2,7 +2,6 @@
 using Linka.Application.Dtos;
 using Linka.Domain.Entities;
 using Linka.Infrastructure.Data;
-using Linka.Infrastructure.Services.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
