@@ -98,6 +98,7 @@ public class FeedService : IFeedService
             .Where(post => post.AssociatedOrganization.Id == organizationId)
             .Include(p => p.Likes)
             .Include(p => p.Shares)
+            .Include(p => p.Comments)
             .Include(p => p.AssociatedOrganization)
             .Include(p => p.Author)
             .ToListAsync();
