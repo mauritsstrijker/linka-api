@@ -10,6 +10,7 @@ namespace Linka.Application.Dtos
     {
         public string Type { get; set; }      
         public string DisplayName { get; set; } 
-        public Guid Id { get; set; }        
+        public Guid Id { get; set; }     
+        public int MatchScore { get; set; }
     }
 }

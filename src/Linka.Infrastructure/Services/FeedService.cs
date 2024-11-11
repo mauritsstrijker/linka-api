@@ -147,7 +147,8 @@ public class FeedService : IFeedService
             {
                 Type = "Volunteer",
                 DisplayName = v.FullName,
-                Id = v.Id
+                Id = v.Id,
+                MatchScore = v.FullName.ToLower().StartsWith(searchLower) ? 1 : 2
             })
             .ToListAsync();
 
@@ -157,7 +158,8 @@ public class FeedService : IFeedService
             {
                 Type = "Organization",
                 DisplayName = o.TradingName,
-                Id = o.Id
+                Id = o.Id,
+                MatchScore = o.TradingName.ToLower().StartsWith(searchLower) ? 1 : 2
             })
             .ToListAsync();
 
@@ -167,7 +169,8 @@ public class FeedService : IFeedService
             {
                 Type = "Event",
                 DisplayName = e.Title,
-                Id = e.Id
+                Id = e.Id,
+                MatchScore = e.Title.ToLower().StartsWith(searchLower) ? 1 : 2
             })
             .ToListAsync();
 
@@ -176,7 +179,8 @@ public class FeedService : IFeedService
         result.AddRange(organizations);
         result.AddRange(events);
 
-        return result;
+        return result.OrderBy(r => r.MatchScore).ThenBy(r => r.DisplayName).ToList();
     }
+
 }
 
