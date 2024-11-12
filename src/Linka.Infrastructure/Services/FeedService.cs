@@ -142,13 +142,13 @@ public class FeedService : IFeedService
         string searchLower = searchTerm.ToLower();
 
         var volunteers = await _context.Volunteers
-            .Where(v => v.FullName.ToLower().Contains(searchLower))
+            .Where(v => (v.Name + " " + v.Surname).ToLower().Contains(searchLower))
             .Select(v => new SearchResultDto
             {
                 Type = "Volunteer",
-                DisplayName = v.FullName,
+                DisplayName = v.Name + " " + v.Surname,
                 Id = v.Id,
-                MatchScore = v.FullName.ToLower().StartsWith(searchLower) ? 1 : 2
+                MatchScore = (v.Name + " " + v.Surname).ToLower().StartsWith(searchLower) ? 1 : 2
             })
             .ToListAsync();
 
