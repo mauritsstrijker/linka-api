@@ -1,28 +1,24 @@
 ﻿using Linka.Application.Common;
 using Linka.Application.Dtos;
 using MediatR;
+using System.Collections.Generic;
 
 namespace Linka.Application.Features.Search
 {
-    public class SearchRequest : IRequest<SearchResponse>
+    public class SearchRequest : IRequest<List<SearchResultDto>>
     {
         public string Search { get; set; }
     }
 
-    public class SearchResponse
-    {
-        public List<SearchResultDto> Results { get; set; }
-    };
-
     public class SearchHandler
         (
         IFeedService feedService
-        )
-        : IRequestHandler<SearchRequest, SearchResponse>
+    )
+        : IRequestHandler<SearchRequest, List<SearchResultDto>>
     {
-        public async Task<SearchResponse> Handle(SearchRequest request, CancellationToken cancellationToken)
+        public async Task<List<SearchResultDto>> Handle(SearchRequest request, CancellationToken cancellationToken)
         {
-            return new SearchResponse { Results = await feedService.SearchAsync(request.Search) };
+            return await feedService.SearchAsync(request.Search);
         }
     }
 }

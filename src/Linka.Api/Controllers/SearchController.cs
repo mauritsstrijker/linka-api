@@ -1,4 +1,5 @@
-﻿using Linka.Application.Features.Search;
+﻿using Linka.Application.Dtos;
+using Linka.Application.Features.Search;
 using Linka.Application.Features.Users.Commands;
 using Linka.Application.Features.Users.Queries;
 using MediatR;
@@ -13,7 +14,7 @@ namespace Linka.Api.Controllers
     {
         [Authorize]
         [HttpGet("search")]
-        public async Task<SearchResponse> Search
+        public async Task<List<SearchResultDto>> Search
             (
             CancellationToken cancellationToken,
             [FromQuery] string searchTerm
