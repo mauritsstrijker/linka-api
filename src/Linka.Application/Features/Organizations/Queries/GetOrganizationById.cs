@@ -20,6 +20,7 @@ namespace Linka.Application.Features.Organizations.Queries
             string TradingName,
             string Phone,
             string? About,
+            string? PixKey,
             AddressDto Address,
             string ProfilePictureBase64,
             int FollowersCount
@@ -50,6 +51,7 @@ namespace Linka.Application.Features.Organizations.Queries
                 TradingName: organization.TradingName,
                 Phone: organization.Phone,
                 About: organization.About,
+                PixKey: organization.PixKey,
                 Address: new AddressDto
                 (
                     Id: organization.Address.Id,

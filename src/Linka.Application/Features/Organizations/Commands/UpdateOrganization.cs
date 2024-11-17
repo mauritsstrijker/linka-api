@@ -12,6 +12,7 @@ namespace Linka.Application.Features.Organizations.Commands
         public CreateAddressDto? Address { get; set; }
         public string? TradingName { get; set; }
         public string? About { get; set; }
+        public string? PixKey { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
     }
@@ -40,6 +41,11 @@ namespace Linka.Application.Features.Organizations.Commands
             if (request.About is not null)
             {
                 currentOrganization.About = request.About;
+            }
+
+            if (request.PixKey is not null)
+            {
+                currentOrganization.PixKey = request.PixKey;
             }
 
             if (request.Phone is not null)
