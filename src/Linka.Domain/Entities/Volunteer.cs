@@ -30,6 +30,7 @@ namespace Linka.Domain.Entities
 
         [InverseProperty("Volunteer2")]
         public List<Connection> ConnectionsAsVolunteer2 { get; set; }
+        public List<ProductReservation> ProductReservations { get; set; }
         public static Volunteer Create
             (
             string cpf,

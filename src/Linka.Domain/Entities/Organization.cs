@@ -15,6 +15,7 @@ namespace Linka.Domain.Entities
         public byte[]? ProfilePictureBytes { get; set; }
         public string? ProfilePictureExtension { get; set; }
         public List<Event> Events { get; set; }
+        public List<Product> Products { get; set; }
 
         public static Organization Create
             (

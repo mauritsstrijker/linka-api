@@ -23,6 +23,8 @@ public class Context : DbContext, IContext
     public DbSet<Follow> Follows { get; set; }
     public DbSet<ConnectionRequest> ConnectionRequests { get; set; }
     public DbSet<Connection> Connections { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<ProductReservation> ProductReservations { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Event>()
