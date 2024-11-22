@@ -26,6 +26,8 @@ internal static class ServiceCollectionExtensions
         services.AddScoped<IConnectionRepository, ConnectionRepository>();
         services.AddScoped<IJobVolunteerActivityRepository, JobVolunteerActivityRepository>();
         services.AddScoped<IFeedService, FeedService>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IProductReservationRepository, ProductReservationRepository>();
     }
 
     internal static void SetupServices(this IServiceCollection services)
