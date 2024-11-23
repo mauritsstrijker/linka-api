@@ -9,4 +9,15 @@ public class ProductReservation : BaseEntity
     public int Cost { get; set; }
     public Product Product { get; set; }
     public Volunteer Volunteer { get; set; }
+
+    public static ProductReservation Create(Product product, Volunteer volunteer)
+    {
+        return new ProductReservation
+        {
+            Id = Guid.NewGuid(),
+            Product = product,
+            Volunteer = volunteer,
+            Cost = product.Cost
+        };
+    }
 }

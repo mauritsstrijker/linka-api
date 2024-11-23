@@ -33,5 +33,12 @@ namespace Linka.Infrastructure.Data.Repositories
         {
             return _context.Organizations.FirstOrDefaultAsync(o => o.User.Id == userId, cancellationToken);
         }
+
+        public Task<List<Organization>> GetAllOrganizationsVolunteerHasEventInteraction(Guid volunteerId, CancellationToken cancellationToken)
+        {
+            return _context.Organizations
+                    .Where(o => o.Events.Any(e => e.Jobs.Any(j => j.Volunteers.Any(v => v.Id == volunteerId)))).ToListAsync(cancellationToken);
+                    
+        }
     }
 }

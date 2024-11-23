@@ -8,7 +8,7 @@ namespace Linka.Application.Features.Volunteers.Queries
 {
     public sealed record GetVolunteerByIdRequest(Guid VolunteerId) : IRequest<GetVolunteerByIdResponse>;
     
-    public sealed record GetVolunteerByIdResponse(Guid UserId, string Name, string Surname, string FullName, string Username, AddressDto Address, int ConnectionsCount, string? ProfilePictureBase64, string? ProfilePictureExtension, string Email);
+    public sealed record GetVolunteerByIdResponse(Guid UserId, string Name, string Surname, string FullName, string Username, AddressDto Address, int ConnectionsCount, string? ProfilePictureBase64, string? ProfilePictureExtension, string Email, int AllTimePoints);
 
     public sealed class GetVolunteerByIdHandler
         (
@@ -41,7 +41,8 @@ namespace Linka.Application.Features.Volunteers.Queries
                 connectionsCount,
                 volunteer.ProfilePictureBytes != null ? Convert.ToBase64String(volunteer.ProfilePictureBytes) : null,
                 volunteer.ProfilePictureExtension,
-                volunteer.User.Email
+                volunteer.User.Email,
+                volunteer.AllTimePoints
             );
         }
     }
