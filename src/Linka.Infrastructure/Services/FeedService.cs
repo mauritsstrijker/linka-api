@@ -41,7 +41,9 @@ public class FeedService : IFeedService
 
         var relevantPosts = await _context.Posts
             .Include(p => p.Likes)
+                .ThenInclude(like => like.User)
             .Include(p => p.Shares)
+                .ThenInclude(share => share.User)
             .Include(p => p.AssociatedOrganization)
             .Include(p => p.Author)
             .ToListAsync();
@@ -97,6 +99,7 @@ public class FeedService : IFeedService
         var posts = await _context.Posts
             .Where(post => post.AssociatedOrganization.Id == organizationId)
             .Include(p => p.Likes)
+                .ThenInclude(like => like.User)
             .Include(p => p.Shares)
                 .ThenInclude(share => share.User)
             .Include(p => p.Comments)
