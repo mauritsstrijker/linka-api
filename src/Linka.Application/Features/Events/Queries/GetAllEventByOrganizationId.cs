@@ -14,6 +14,7 @@ namespace Linka.Application.Features.Events.Queries
     public sealed record GetAllEventByOrganizationIdResponse
         (
         Guid Id,
+        Guid OrganizationId,
         string Title,
         string Description,
         DateTime StartDateTime,
@@ -35,6 +36,7 @@ namespace Linka.Application.Features.Events.Queries
 
             var response = events.Select(e => new GetAllEventByOrganizationIdResponse(
              e.Id,
+             e.Organization.Id,
              e.Title,
              e.Description,
              e.StartDateTime,

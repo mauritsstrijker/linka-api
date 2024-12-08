@@ -26,6 +26,7 @@ namespace Linka.Infrastructure.Data.Repositories
         {
             return _context.Events
                 .Include(x => x.Address)
+                .Include(x => x.Organization)
                 .Where(x => x.Organization.Id == organizationId)
                 .ToListAsync(cancellationToken);
         }
@@ -34,6 +35,7 @@ namespace Linka.Infrastructure.Data.Repositories
         {
             return _context.Events
                 .Include(x => x.Address) 
+                .Include(x => x.Organization)
                 .Include(x => x.Jobs) 
                     .ThenInclude(job => job.Volunteers)
                 .Where(x => x.Jobs.Any(job => job.Volunteers.Any(v => v.Id == volunteerId)))
