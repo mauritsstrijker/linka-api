@@ -4,7 +4,7 @@
 
 Certifique-se de que você possui os seguintes itens instalados em sua máquina:
 
-- [.NET SDK](https://dotnet.microsoft.com/download) (versão mínima recomendada: 6.0 ou superior)
+- [.NET SDK](https://dotnet.microsoft.com/download) (versão mínima recomendada: 8.0 ou superior)
 - [Git](https://git-scm.com/) (para clonar o repositório)
 - Um editor de código como [Visual Studio Code](https://code.visualstudio.com/) ou [Visual Studio](https://visualstudio.microsoft.com/)
 - Uma instância de SQL Server acessível
