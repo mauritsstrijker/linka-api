@@ -19,7 +19,8 @@ Siga as etapas abaixo para configurar e executar o projeto:
    cd linka-api
 
 2. **Instalar dependências e executar aplicação**
-   ```dotnet restore
+   ```bash
+   dotnet restore
    dotnet build
    dotnet run
 **Certifique-se de atualizar a connectionString do banco de dados no arquivo appsettings.json**
